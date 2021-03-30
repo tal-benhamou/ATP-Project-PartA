@@ -20,7 +20,7 @@ public class SimpleMazeGenerator extends AMazeGenerator{
 
         Position curr = new Position(0,0);
         int step = 0;
-        while (!(curr == maze.getGoalPosition())){
+        while (!(curr.equals(maze.getGoalPosition()))){
             Position tmp = new Position(curr.getRowIndex(), curr.getColumnIndex());
             if (step % 2 == 0)
             {
@@ -48,15 +48,16 @@ public class SimpleMazeGenerator extends AMazeGenerator{
             step++;
         }
         Random r = new Random();
+        Position tmp = new Position();
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                curr.setRow(i);
-                curr.setColumn(j);
-                if (!(path.contains(curr))){
-                    maze.getMap()[i][j] = r.nextInt(2) - 1;
+                tmp.setRow(i);
+                tmp.setColumn(j);
+                if (!path.contains(tmp))
+                    maze.getMap()[i][j] = r.nextInt(2);
                 }
-            }
         }
+
         return maze;
     }
 }
