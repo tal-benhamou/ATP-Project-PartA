@@ -11,7 +11,11 @@ public class Maze {
         this.goal = goal;
         this.map = map;
     }
-    public Maze(int[][] map){}
+    public Maze(int[][] map){
+        this.map = map;
+        this.start = null;
+        this.goal = null;
+    }
 
     public int[][] getMap() {
         return map;
