@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import algorithms.search.ISearchable;
+
 public class Maze {
 
     private int[][] map;
