@@ -9,4 +9,5 @@ public interface ISearchable {
     AState getGoalState();
     ArrayList<AState> getAllSuccessors(AState aState);
     AState ChangeState(AState aState);
+    boolean isSolved(AState a1, AState a2);
 }

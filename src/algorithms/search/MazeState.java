@@ -4,29 +4,44 @@ import algorithms.mazeGenerators.Position;
 
 public class MazeState extends AState{
 
-    private boolean visited;
-    private Position pos;
+    private boolean _visited;
+    private Position _pos;
 
 
-    public MazeState(String state, double cost) {
-        super(state, cost);
-        this.visited = false;
-        this.pos = null;
+    public MazeState(AState parent, double cost, Position pos) {
+        super(parent, cost, pos.toString());
+        this._visited = false;
+        this._pos = pos;
+    }
+
+    @Override
+    public String toString() {
+        return _pos.toString();
+    }
+
+    public MazeState(Position pos) {
+        super(null,1, pos.toString());
+        this._pos = pos;
     }
 
     public boolean isVisited() {
-        return visited;
+        return _visited;
     }
 
-    public Position getPos() {
-        return pos;
+    public Position getPosition() {
+        return _pos;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.getPosition().equals(((MazeState)obj).getPosition());
     }
 
     public void setVisited(boolean visited) {
-        this.visited = visited;
+        this._visited = visited;
     }
 
-    public void setPos(Position pos) {
-        this.pos = pos;
+    public void setPosition(Position pos) {
+        this._pos = pos;
     }
 }

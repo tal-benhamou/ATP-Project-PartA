@@ -2,11 +2,39 @@ package algorithms.search;
 
 public abstract class AState {
 
-    private String state;
-    private double cost;
+    private AState _parent = null;
+    private double _cost = 1;
+    private String name = null;
 
-    public AState(String state, double cost) {
-        this.state = state;
-        this.cost = cost;
+    public AState(AState parent, double cost, String name) {
+        this._parent = parent;
+        this._cost = cost;
+        this.name = name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.name.equals(((AState)obj).getName());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double get_cost() {
+        return _cost;
+    }
+
+    public AState get_parent() {
+        return _parent;
+    }
+
+    public void set_parent(AState _parent) {
+        this._parent = _parent;
+    }
+
+    public void set_cost(double _cost) {
+        this._cost = _cost;
+    }
+
 }
