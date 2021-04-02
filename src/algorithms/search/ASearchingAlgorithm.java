@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
 
-    protected HashMap<AState, Boolean> visited;
+    protected HashMap<String, AState> visited;
     protected int _NumberOfNodesEvaluated;
     public abstract Object getStruct();
     public abstract void insertStruct(Object struct, AState aState);
@@ -15,15 +15,16 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
     protected abstract boolean containStruct(Object struct, AState n);
 
     public Solution solve(ISearchable s){
-
+        s.clearStruct();
         Object struct = this.getStruct();
         this.visited = new HashMap<>();
         this.insertStruct(struct, s.getStartState());
+        s.setStruct(s.getStartState());
         AState tmp = null;
         while (!this.isEmpty(struct)){
             AState curr = this.removeElement(struct);
-            if (!contains(this.visited, curr))
-                this.visited.put(curr, true);
+            if (this.visited.get(curr.getName()) == null)
+                this.visited.put(curr.getName(), curr);
             else
                 continue;
             //curr.set_parent(tmp);
@@ -32,8 +33,9 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
                 return new Solution(curr);
             ArrayList<AState> neighbours = s.getAllSuccessors(curr);
             for (AState n: neighbours) {
-                if (!contains(this.visited, n) && !(containStruct(struct, n))){
+                if ((this.visited.get(n.getName()) == null) && !s.inStruct(n)){
                     this.insertStruct(struct, n);
+                    s.setStruct(n);
                 }
             }
             tmp = curr;

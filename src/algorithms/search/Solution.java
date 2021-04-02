@@ -21,7 +21,11 @@ public class Solution {
             path.add(curr.get_parent());
             curr = curr.get_parent();
         }
-        return path;
+        ArrayList<AState> finalPath = new ArrayList<>();
+        for (int i = path.size() - 1; i >= 0 ; i--) {
+            finalPath.add(path.get(i));
+        }
+        return finalPath;
     }
 }
 

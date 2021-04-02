@@ -7,12 +7,15 @@ import java.util.ArrayList;
 
 public class SearchableMaze implements ISearchable{
     private Maze maze;
+    private boolean[][] inStruct;
 
 
     public SearchableMaze(Maze myMaze) {
         this.maze = myMaze;
     }
-
+    public void clearStruct(){
+        this.inStruct = new boolean[this.maze.getMap().length][this.maze.getMap()[0].length];
+    }
     @Override
     public AState getStartState() { return new MazeState(maze.getStartPosition()); }
 
@@ -73,5 +76,15 @@ public class SearchableMaze implements ISearchable{
 
     public boolean isSolved(AState o1, AState o2){
         return ((MazeState)o1).getPosition().equals(((MazeState)o2).getPosition());
+    }
+
+    @Override
+    public boolean inStruct(AState aState) {
+        return this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()];
+    }
+
+    @Override
+    public void setStruct(AState aState) {
+        this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()] = true;
     }
 }
