@@ -87,4 +87,8 @@ public class SearchableMaze implements ISearchable{
     public void setStruct(AState aState) {
         this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()] = true;
     }
+
+    public Maze getMaze() {
+        return maze;
+    }
 }

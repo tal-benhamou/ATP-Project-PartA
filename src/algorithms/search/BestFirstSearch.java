@@ -1,6 +1,6 @@
 package algorithms.search;
 
-import java.util.ArrayList;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -23,19 +23,19 @@ public class BestFirstSearch extends ASearchingAlgorithm{
     }
 
     @Override
-    public void insertStruct(Object struct, AState neighbour) {
-        boolean found = false;
-        for (AState state: ((PriorityQueue<AState>)struct)) {
-            if (state.getName().equals(neighbour.getName())){
-                found = true;
-               if (neighbour.get_cost() < state.get_cost()){
-                   ((PriorityQueue<AState>)struct).remove(state);
-                   ((PriorityQueue<AState>)struct).add(neighbour);
-               }
-                break;
+    public void insertStruct(Object struct, AState neighbour, ISearchable s) {
+        if (s.inStruct(neighbour)) {
+            for (AState state : ((PriorityQueue<AState>) struct)) {
+                if (state.getName().equals(neighbour.getName())) {
+                    if (neighbour.get_cost() < state.get_cost()) {
+                        ((PriorityQueue<AState>) struct).remove(state);
+                        ((PriorityQueue<AState>) struct).add(neighbour);
+                    }
+                    break;
+                }
             }
         }
-        if (!found)
+        else
             ((PriorityQueue<AState>)struct).add(neighbour);
     }
 
@@ -48,16 +48,6 @@ public class BestFirstSearch extends ASearchingAlgorithm{
     public AState removeElement(Object struct) {
         return ((PriorityQueue<AState>)struct).poll();
     }
-
-    @Override
-    protected boolean containStruct(Object struct, AState n) {
-        for (AState aState:(PriorityQueue<AState>)struct) {
-            if(aState.getName().equals(n.getName()))
-                return true;
-        }
-        return false;
-    }
-
 
     @Override
     public String getName() {

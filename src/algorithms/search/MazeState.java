@@ -4,13 +4,11 @@ import algorithms.mazeGenerators.Position;
 
 public class MazeState extends AState{
 
-    private boolean _visited;
     private Position _pos;
 
 
     public MazeState(AState parent, double cost, Position pos) {
         super(parent, cost, pos.toString());
-        this._visited = false;
         this._pos = pos;
     }
 
@@ -24,9 +22,6 @@ public class MazeState extends AState{
         this._pos = pos;
     }
 
-    public boolean isVisited() {
-        return _visited;
-    }
 
     public Position getPosition() {
         return _pos;
@@ -37,11 +32,4 @@ public class MazeState extends AState{
         return this.getPosition().equals(((MazeState)obj).getPosition());
     }
 
-    public void setVisited(boolean visited) {
-        this._visited = visited;
-    }
-
-    public void setPosition(Position pos) {
-        this._pos = pos;
-    }
 }

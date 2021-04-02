@@ -29,12 +29,5 @@ public abstract class AState {
         return _parent;
     }
 
-    public void set_parent(AState _parent) {
-        this._parent = _parent;
-    }
-
-    public void set_cost(double _cost) {
-        this._cost = _cost;
-    }
 
 }
