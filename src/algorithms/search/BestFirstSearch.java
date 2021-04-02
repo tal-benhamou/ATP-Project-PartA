@@ -1,5 +1,6 @@
 package algorithms.search;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -47,6 +48,16 @@ public class BestFirstSearch extends ASearchingAlgorithm{
     public AState removeElement(Object struct) {
         return ((PriorityQueue<AState>)struct).poll();
     }
+
+    @Override
+    protected boolean containStruct(Object struct, AState n) {
+        for (AState aState:(PriorityQueue<AState>)struct) {
+            if(aState.getName().equals(n.getName()))
+                return true;
+        }
+        return false;
+    }
+
 
     @Override
     public String getName() {

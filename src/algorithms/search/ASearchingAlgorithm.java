@@ -12,6 +12,7 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
     public abstract void insertStruct(Object struct, AState aState);
     public abstract boolean isEmpty(Object struct);
     public abstract AState removeElement(Object struct);
+    protected abstract boolean containStruct(Object struct, AState n);
 
     public Solution solve(ISearchable s){
 
@@ -21,15 +22,17 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
         AState tmp = null;
         while (!this.isEmpty(struct)){
             AState curr = this.removeElement(struct);
-            curr.set_parent(tmp);
             if (!contains(this.visited, curr))
                 this.visited.put(curr, true);
+            else
+                continue;
+            //curr.set_parent(tmp);
             this._NumberOfNodesEvaluated++;
             if (s.isSolved(curr, s.getGoalState()))
                 return new Solution(curr);
             ArrayList<AState> neighbours = s.getAllSuccessors(curr);
             for (AState n: neighbours) {
-                if (!contains(this.visited, n)){
+                if (!contains(this.visited, n) && !(containStruct(struct, n))){
                     this.insertStruct(struct, n);
                 }
             }
@@ -37,6 +40,8 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
         }
         return null;
     }
+
+
 
     public boolean contains(HashMap<AState, Boolean> hash, AState aState){
         for (AState astate: hash.keySet()) {

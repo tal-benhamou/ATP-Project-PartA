@@ -61,4 +61,13 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
     public AState removeElement(Object obj) {
         return ((ArrayList<AState>)obj).remove(0);
     }
+
+    @Override
+    protected boolean containStruct(Object struct, AState n) {
+        for (AState aState:((ArrayList<AState>)struct)) {
+            if(aState.getName().equals(n.getName()))
+                return true;
+        }
+        return false;
+    }
 }
