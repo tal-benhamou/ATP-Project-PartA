@@ -14,6 +14,8 @@ public class Solution {
     }
 
     private ArrayList<AState> createPath(AState start) {
+        if (start == null)
+            return null;
         ArrayList<AState> path = new ArrayList<>();
         AState curr = start;
         path.add(start);

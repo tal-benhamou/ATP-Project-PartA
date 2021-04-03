@@ -15,6 +15,9 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
 
 
     public Solution solve(ISearchable s){
+        if (s == null){
+            return null;
+        }
         s.clearStruct();
         Object struct = this.getStruct();
         this.visited = new HashMap<>();

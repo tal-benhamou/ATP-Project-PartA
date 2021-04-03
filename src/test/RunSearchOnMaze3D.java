@@ -1,34 +1,35 @@
 package test;
+
+import algorithms.maze3D.IMazeGenerator3D;
+import algorithms.maze3D.Maze3D;
+import algorithms.maze3D.MyMaze3DGenerator;
+import algorithms.maze3D.SearchableMaze3D;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.*;
+
 import java.util.ArrayList;
 
-public class RunSearchOnMaze {
+public class RunSearchOnMaze3D {
     public static void main(String[] args) {
-        IMazeGenerator mg = new MyMazeGenerator();
-        Maze maze = mg.generate(1000, 1000);
-        SearchableMaze searchableMaze = new SearchableMaze(maze);
+        IMazeGenerator3D mg = new MyMaze3DGenerator();
+        Maze3D maze3D = mg.generate(500,500, 500);
+        SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
         solveProblem(searchableMaze, new BreadthFirstSearch());
-        solveProblem(searchableMaze, new DepthFirstSearch());
-        solveProblem(searchableMaze, new BestFirstSearch());
+        //solveProblem(searchableMaze, new DepthFirstSearch());
+        //solveProblem(searchableMaze, new BestFirstSearch());
     }
     private static void solveProblem(ISearchable domain, ISearchingAlgorithm searcher) {
 //Solve a searching problem with a searcher
         Solution solution = searcher.solve(domain);
         System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
 //Printing Solution Path
-                System.out.println("Solution path:");
+        System.out.println("Solution path:");
         ArrayList<AState> solutionPath = solution.getSolutionPath();
-        double cost = 0;
         for (int i = 0; i < solutionPath.size(); i++) {
             System.out.println(String.format("%s.%s",i,solutionPath.get(i)));
-            cost = cost + solutionPath.get(i).get_cost();
         }
-        System.out.println(cost);
-        //((SearchableMaze)domain).getMaze().print();
 
     }
 }
-

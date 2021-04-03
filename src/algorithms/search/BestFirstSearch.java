@@ -24,6 +24,8 @@ public class BestFirstSearch extends ASearchingAlgorithm{
 
     @Override
     public void insertStruct(Object struct, AState neighbour, ISearchable s) {
+        if (struct == null || neighbour == null)
+            return;
         if (s.inStruct(neighbour)) {
             for (AState state : ((PriorityQueue<AState>) struct)) {
                 if (state.getName().equals(neighbour.getName())) {
@@ -41,7 +43,7 @@ public class BestFirstSearch extends ASearchingAlgorithm{
 
     @Override
     public boolean isEmpty(Object struct) {
-        return false;
+        return ((PriorityQueue<AState>)struct).isEmpty();
     }
 
     @Override

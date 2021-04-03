@@ -10,6 +10,8 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
 
     @Override
     public void insertStruct(Object struct, AState aState, ISearchable s) {
+        if (struct == null || aState == null)
+            return;
         if (!s.inStruct(aState))
             ((Stack<AState>)struct).push(aState);
     }

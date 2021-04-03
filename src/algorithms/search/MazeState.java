@@ -29,6 +29,8 @@ public class MazeState extends AState{
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
         return this.getPosition().equals(((MazeState)obj).getPosition());
     }
 

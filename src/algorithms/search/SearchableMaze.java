@@ -26,6 +26,8 @@ public class SearchableMaze implements ISearchable{
 
     @Override
     public ArrayList<AState> getAllSuccessors(AState astate) {
+        if (astate == null)
+            return null;
         Position curr = ((MazeState)astate).getPosition();
         ArrayList<AState> neighbours = new ArrayList<AState>();
         int rows = this.maze.getMap().length;
@@ -75,16 +77,22 @@ public class SearchableMaze implements ISearchable{
     }
 
     public boolean isSolved(AState o1, AState o2){
+        if (o1 == null || o2 == null)
+            return false;
         return ((MazeState)o1).getPosition().equals(((MazeState)o2).getPosition());
     }
 
     @Override
     public boolean inStruct(AState aState) {
+        if (aState == null)
+            return false;
         return this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()];
     }
 
     @Override
     public void setStruct(AState aState) {
+        if (aState == null)
+            return;
         this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()] = true;
     }
 

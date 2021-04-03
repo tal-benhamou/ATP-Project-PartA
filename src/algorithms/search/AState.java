@@ -14,6 +14,8 @@ public abstract class AState {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
         return this.name.equals(((AState)obj).getName());
     }
 

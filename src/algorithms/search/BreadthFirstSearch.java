@@ -23,6 +23,8 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
 
     @Override
     public void insertStruct(Object obj, AState aState, ISearchable s) {
+        if (obj == null || aState == null)
+            return;
         if (!s.inStruct(aState))
             ((ArrayList<AState>)obj).add(aState);
     }
