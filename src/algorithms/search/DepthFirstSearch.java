@@ -27,6 +27,11 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
     }
 
     @Override
+    public boolean Finish(ISearchable s, AState curr) {
+        return s.isSolved(curr, s.getGoalState());
+    }
+
+    @Override
     public String getName() {
         return "Depth First Search";
     }

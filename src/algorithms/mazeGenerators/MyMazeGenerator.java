@@ -1,5 +1,8 @@
 package algorithms.mazeGenerators;
 
+import algorithms.maze3D.Position3D;
+import javafx.geometry.Pos;
+
 import java.util.*;
 
 public class MyMazeGenerator extends AMazeGenerator {
@@ -11,6 +14,7 @@ public class MyMazeGenerator extends AMazeGenerator {
      */
     @Override
     public Maze generate(int rows, int columns) {
+
         int[][] map = new int[rows][columns];
         Random r = new Random();
         Position curr = new Position();
@@ -34,57 +38,86 @@ public class MyMazeGenerator extends AMazeGenerator {
         }
         ArrayList<Position> GoalCells = new ArrayList<>();
         ArrayList<Position> CloseToGoal = new ArrayList<>();
+        int currRow, currCol;
         /*iterative*/
-        Stack<Position> StackCells = new Stack<>();
-        Stack<Position> StackNeighbour = new Stack<>();
-        Position neighbour;
-        StackCells.push(curr);
+        Stack<Position[]> StackCells = new Stack<>();//ArrayList consider parent in index 0 and position in index 1
+        Stack<Position[]> StackNeighbour = new Stack<>();
+        Position[] PosCurr = new Position[2];
+        PosCurr[0] = null;//start goal dont have a parent
+        PosCurr[1] = curr;
+        StackCells.push(PosCurr);
         while (!StackCells.isEmpty()) {
-            curr = StackCells.pop();
-            visited[curr.getRowIndex()][curr.getColumnIndex()] = true;
-            maze.getMap()[curr.getRowIndex()][curr.getColumnIndex()] = 0;
+            PosCurr = StackCells.peek();
+            curr = StackCells.pop()[1];
 
-            if (curr.getColumnIndex() == maze.getMap()[0].length - 2) { //if columns is even we c`ant achieve the last column
+            currRow = curr.getRowIndex();
+            currCol = curr.getColumnIndex();
+
+            if (visited[currRow][currCol])
+                continue;
+            //breaking wall and turn on the visited of the position.
+            visited[currRow][currCol] = true;
+            maze.getMap()[currRow][currCol] = 0;
+            //breaking wall of the cell near to the new visited position.
+
+            if (currCol == maze.getMap()[0].length - 2) { //if columns is even we c`ant achieve the last column
                 CloseToGoal.add(curr);
             }
-            if ((maze.getStartPosition().getRowIndex() == 0) && (curr.getRowIndex() == maze.getMap().length - 1)) {
+            if ((maze.getStartPosition().getRowIndex() == 0) && (currRow == maze.getMap().length - 1)) {
                 GoalCells.add(curr);
-            } else if ((maze.getStartPosition().getColumnIndex() == 0) && (curr.getColumnIndex() == maze.getMap()[0].length - 1)) {
+            } else if ((maze.getStartPosition().getColumnIndex() == 0) && (currCol == maze.getMap()[0].length - 1)) {
                 GoalCells.add(curr);
             }
 
             insertNei(StackCells, StackNeighbour, curr, visited, rows, columns);
             if (StackCells.isEmpty())
                 continue;
-            neighbour = StackCells.peek();
-
-            if (curr.getRowIndex() - neighbour.getRowIndex() < 0) { //neighbour chosen below from the curr
-                maze.getMap()[curr.getRowIndex() + 1][curr.getColumnIndex()] = 0;
-                visited[curr.getRowIndex() + 1][curr.getColumnIndex()] = true;
-            } else if (curr.getRowIndex() - neighbour.getRowIndex() > 0) { //neighbour chosen above from the curr
-                maze.getMap()[curr.getRowIndex() - 1][curr.getColumnIndex()] = 0;
-                visited[curr.getRowIndex() - 1][curr.getColumnIndex()] = true;
-            } else if (curr.getColumnIndex() - neighbour.getColumnIndex() < 0) { //neighbour chosen right from the curr
-                maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() + 1] = 0;
-                visited[curr.getRowIndex()][curr.getColumnIndex() + 1] = true;
-            } else if (curr.getColumnIndex() - neighbour.getColumnIndex() > 0) { //neighbour chosen left from the curr
-                maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() - 1] = 0;
-                visited[curr.getRowIndex()][curr.getColumnIndex() - 1] = true;
-            }
+            BreakTheWall(PosCurr,visited,maze);
         }
-        /*choosing GoalCell*/
+        //choosing GoalCell
         if (!GoalCells.isEmpty())
             maze.setGoal(GoalCells.get(r.nextInt(GoalCells.size())));
         else { //we want to choose randomly cell close to the last column and open the wall for the goalCell.
             Position CloseToGoalCell;
+            int gRow, gCol;
             CloseToGoalCell = CloseToGoal.get(r.nextInt(CloseToGoal.size()));
-            maze.getMap()[CloseToGoalCell.getRowIndex()][CloseToGoalCell.getColumnIndex() + 1] = 0;
-            visited[CloseToGoalCell.getRowIndex()][CloseToGoalCell.getColumnIndex() + 1] = true;
-            maze.setGoal(new Position(CloseToGoalCell.getRowIndex(), CloseToGoalCell.getColumnIndex() + 1));
+
+            gRow = CloseToGoalCell.getRowIndex();
+            gCol = CloseToGoalCell.getColumnIndex();
+
+            maze.getMap()[gRow][gCol + 1] = 0;
+            visited[gRow][gCol + 1] = true;
+            maze.setGoal(new Position(gRow, gCol + 1));
         }
         randomizeBreaking(maze.getMap());
         return maze;
         /*iterative DONE*/
+    }
+
+    private void BreakTheWall(Position[] PosCurr, Boolean[][] visited,Maze maze) {
+        Position curr = PosCurr[1];
+        Position parent = PosCurr[0];
+        if (parent != null) {
+            int currCol,currRow, pCol, pRow;
+            pCol = parent.getColumnIndex();
+            pRow = parent.getRowIndex();
+            currCol = curr.getColumnIndex();
+            currRow = curr.getRowIndex();
+
+            if (currRow - pRow < 0) { //parent below from the curr Position
+                maze.getMap()[currRow + 1][currCol] = 0;
+                visited[currRow + 1][currCol] = true;
+            } else if (currRow - pRow > 0) { //parent above from the curr Position
+                maze.getMap()[currRow - 1][currCol] = 0;
+                visited[currRow - 1][currCol] = true;
+            } else if (currCol - pCol < 0) { //parent right from the curr Position
+                maze.getMap()[currRow][currCol + 1] = 0;
+                visited[currRow][currCol + 1] = true;
+            } else if (currCol - pCol > 0) { //parent left from the curr Position
+                maze.getMap()[currRow][currCol - 1] = 0;
+                visited[currRow][currCol - 1] = true;
+            }
+        }
     }
 
     /**
@@ -95,19 +128,34 @@ public class MyMazeGenerator extends AMazeGenerator {
      * @param r              present the number of rows
      * @param c              present the number of columns
      */
-    private void insertNei(Stack<Position> stackCells, Stack<Position> StackNeighbour, Position curr, Boolean[][] visited, int r, int c) {
+    private void insertNei(Stack<Position[]> stackCells,Stack<Position[]> StackNeighbour, Position curr, Boolean[][] visited, int r, int c) {
         Random random = new Random();
-        if ((curr.getColumnIndex() + 2 < c) && !visited[curr.getRowIndex()][curr.getColumnIndex() + 2]) {
-            StackNeighbour.push(new Position(curr.getRowIndex(), curr.getColumnIndex() + 2));
+        int currCol, currRow;
+        currCol = curr.getColumnIndex();
+        currRow = curr.getRowIndex();
+        if ((currCol + 2 < c) && !visited[currRow][currCol + 2]) {
+            Position[] nei1 = new Position[2];
+            nei1[0] = curr;//add the parent
+            nei1[1] = (new Position(currRow, currCol + 2));
+            StackNeighbour.push(nei1);
         }
-        if ((curr.getRowIndex() + 2 < r) && !visited[curr.getRowIndex() + 2][curr.getColumnIndex()]) {
-            StackNeighbour.push(new Position(curr.getRowIndex() + 2, curr.getColumnIndex()));
+        if ((currRow + 2 < r) && !visited[currRow + 2][currCol]) {
+            Position[] nei2 = new Position[2];
+            nei2[0] = (curr);//add the parent
+            nei2[1] = (new Position(currRow + 2, currCol));
+            StackNeighbour.push(nei2);
         }
-        if ((curr.getColumnIndex() - 2 >= 0) && !visited[curr.getRowIndex()][curr.getColumnIndex() - 2]) {
-            StackNeighbour.push(new Position(curr.getRowIndex(), curr.getColumnIndex() - 2));
+        if ((currCol - 2 >= 0) && !visited[currRow][currCol - 2]) {
+            Position[] nei3 = new Position[2];
+            nei3[0] = (curr);//add the parent
+            nei3[1] = (new Position(currRow, currCol - 2));
+            StackNeighbour.push(nei3);
         }
-        if (curr.getRowIndex() - 2 >= 0 && !visited[curr.getRowIndex() - 2][curr.getColumnIndex()]) {
-            StackNeighbour.push(new Position(curr.getRowIndex() - 2, curr.getColumnIndex()));
+        if (currRow - 2 >= 0 && !visited[currRow - 2][currCol]) {
+            Position[] nei4 = new Position[2];
+            nei4[0] = (curr);//add the parent
+            nei4[1] = (new Position(currRow - 2, currCol));
+            StackNeighbour.push(nei4);
         }
         while (!StackNeighbour.isEmpty()) {
             stackCells.push(StackNeighbour.remove(random.nextInt(StackNeighbour.size()))); // insert in random order to the stack cells
@@ -130,9 +178,8 @@ public class MyMazeGenerator extends AMazeGenerator {
                     map[i][col - 1] = 0;
             }
         }
+
     }
-
-
 }
 
 

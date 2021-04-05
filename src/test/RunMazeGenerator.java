@@ -14,7 +14,15 @@ public class RunMazeGenerator {
        // System.out.println(String.format("Maze generationtime(ms): %s", mazeGenerator.measureAlgorithmTimeMillis
       //                  (100/*rows*/,100/*columns*/)));
         // generate another maze
-        Maze maze = mazeGenerator.generate(10/*rows*/, 10/*columns*/);
+        int count = 0;
+//        for (int i = 0; i < 10000; i++) {
+//            IMazeGenerator mz = new MyMazeGenerator();
+//            Maze maze = mz.generate(100/*rows*/, 100/*columns*/);
+//            if(maze.getGoalPosition() == null)
+//                count++;
+//        }
+//        System.out.println(count);
+        Maze maze = mazeGenerator.generate(14/*rows*/, 14/*columns*/);
         // prints the maze
         maze.print();
         // get the maze entrance
