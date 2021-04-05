@@ -52,6 +52,11 @@ public class BestFirstSearch extends ASearchingAlgorithm{
     }
 
     @Override
+    public boolean Finish(ISearchable s, AState curr) {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "Best First Search";
     }
