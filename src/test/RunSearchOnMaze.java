@@ -11,9 +11,9 @@ public class RunSearchOnMaze {
         int count = 0;
         int count2 = 0;
         double bfs, best;
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 1; i++) {
                 IMazeGenerator mg = new MyMazeGenerator();
-                Maze maze = mg.generate(100, 100);
+                Maze maze = mg.generate(1000, 1000);
                 try {
                     SearchableMaze searchableMaze = new SearchableMaze(maze);
                     bfs = solveProblem(searchableMaze, new BreadthFirstSearch());

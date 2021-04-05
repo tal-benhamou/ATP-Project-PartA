@@ -9,16 +9,22 @@ public class Solution {
         return _pathSolution;
     }
 
-    public Solution(AState start) {
-        this._pathSolution = createPath(start);
+    public Solution(AState GoalCell) {
+        this._pathSolution = createPath(GoalCell);
     }
 
-    private ArrayList<AState> createPath(AState start) {
-        if (start == null)
+    /**
+     * @param GoalCell the Goal cell
+     * @return Path from StartCell to GoalCell
+     * the Method create the Solution Path by walking back from Goal Cell to Start Cell with the
+     * _parent field of each AState.
+     */
+    private ArrayList<AState> createPath(AState GoalCell) {
+        if (GoalCell == null)
             return null;
         ArrayList<AState> path = new ArrayList<>();
-        AState curr = start;
-        path.add(start);
+        AState curr = GoalCell;
+        path.add(GoalCell);
         while(curr.get_parent() != null){
             path.add(curr.get_parent());
             curr = curr.get_parent();

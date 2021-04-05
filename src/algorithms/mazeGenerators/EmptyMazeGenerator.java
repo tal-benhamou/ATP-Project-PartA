@@ -3,6 +3,12 @@ package algorithms.mazeGenerators;
 import java.util.Random;
 
 public class EmptyMazeGenerator extends AMazeGenerator{
+    /**
+     * @param rows number of rows
+     * @param columns number of columns
+     * @return empty maze
+     * here we generating an empty maze
+     */
     @Override
     public Maze generate(int rows, int columns) {
         int[][] map = new int[rows][columns];
