@@ -36,9 +36,9 @@ public class BestFirstSearch extends ASearchingAlgorithm{
                     break;
                 }
             }
-        }
-        else
-            ((PriorityQueue<AState>)struct).add(neighbour);
+        } else
+            ((PriorityQueue<AState>) struct).add(neighbour);
+
     }
 
     @Override
@@ -49,11 +49,6 @@ public class BestFirstSearch extends ASearchingAlgorithm{
     @Override
     public AState removeElement(Object struct) {
         return ((PriorityQueue<AState>)struct).poll();
-    }
-
-    @Override
-    public boolean Finish(ISearchable s, AState curr) {
-        return false;
     }
 
     @Override

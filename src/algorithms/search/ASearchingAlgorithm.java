@@ -12,7 +12,6 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
     public abstract void insertStruct(Object struct, AState aState, ISearchable searchable);
     public abstract boolean isEmpty(Object struct);
     public abstract AState removeElement(Object struct);
-    public abstract boolean Finish(ISearchable s, AState curr);
 
 
     public Solution solve(ISearchable s){
@@ -31,7 +30,7 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
             else
                 continue;
             this._NumberOfNodesEvaluated++;
-            if (this.Finish(s, curr))
+            if (s.isSolved(curr, s.getGoalState()))
                 return new Solution(curr);
             ArrayList<AState> neighbours = s.getAllSuccessors(curr);
             for (AState n: neighbours) {
@@ -41,7 +40,7 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
                 }
             }
         }
-        return new Solution(s.getGoalState());
+        return null;
     }
 
 
