@@ -9,6 +9,13 @@ import java.util.Random;
 import java.util.Stack;
 
 public class MyMaze3DGenerator extends AMaze3DGenerator {
+    /**
+     * @param depth number of depth
+     * @param row number of rows
+     * @param column number of columns
+     * @return maze 3D with those dimensions
+     * the method generate an interesting and not simple maze-3D
+     */
     public Maze3D generate(int depth, int row, int column) {
         int[][][] map = new int[depth][row][column];
         Random r = new Random();
@@ -100,7 +107,16 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
         return maze;
     }
 
-
+    /**
+     * @param stackCells     Stack Of All Cells
+     * @param StackNeighbour Stack of neighbours
+     * @param curr           the current cell
+     * @param visited        present 3D array of visited cells
+     * @param r              present the number of rows
+     * @param c              present the number of columns
+     * @param d              present the number of depth
+     *          the method insert all possible neighbours of curr to the StackCells
+     */
     public void insertNei(Stack<Position3D[]> stackCells, Stack<Position3D[]> StackNeighbour, Position3D curr, Boolean[][][] visited, int d, int r, int c) {
         Random random = new Random();
         int currCol, currDepth, currRow;
@@ -147,7 +163,12 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
             stackCells.push(StackNeighbour.remove(random.nextInt(StackNeighbour.size()))); // insert in random order to the stack cells
         }
     }
-
+    /**
+     * @param PosCurr array of 2 Position3D - index 0 = parent, index 1 = curr
+     * @param visited struct that marker the visited cells
+     * @param maze the maze
+     *             the method breaking the wall between the curr cell and his parent
+     */
     private void BreakTheWall(Position3D[] PosCurr, Boolean[][][] visited, Maze3D maze) {
         Position3D curr = PosCurr[1];
         Position3D parent = PosCurr[0];
@@ -183,7 +204,11 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
     }
 
 
-
+    /**
+     * @param map the maze
+     *          if the rows or the columns or the depth are even we can't achieve the frame of the maze
+     *          so we randomly breaking walls from the frame of the maze
+     */
     public void randomizeBreaking(int[][][] map) {
         Random r = new Random();
         int row = map[0].length;

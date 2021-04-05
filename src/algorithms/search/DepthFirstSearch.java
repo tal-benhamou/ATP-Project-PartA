@@ -8,12 +8,18 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
         return new Stack<AState>();
     }
 
+    /**
+     * @param struct Stack of the DFS iterative algorithm
+     * @param neighbour Potential cell
+     * @param s Searchable problem
+     *          inserting neighbour to the Stack if is not there yet
+     */
     @Override
-    public void insertStruct(Object struct, AState aState, ISearchable s) {
-        if (struct == null || aState == null)
+    public void insertStruct(Object struct, AState neighbour, ISearchable s) {
+        if (struct == null || neighbour == null)
             return;
-        if (!s.inStruct(aState))
-            ((Stack<AState>)struct).push(aState);
+        if (!s.inStruct(neighbour))
+            ((Stack<AState>)struct).push(neighbour);
     }
 
     @Override

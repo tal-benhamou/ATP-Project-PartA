@@ -6,6 +6,10 @@ import java.util.HashMap;
 
 public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
 
+    /**
+     * visited : HashMap of Cells that we visit already
+     * _NumberOfNodesEvaluated : number of nodes we visited
+     */
     protected HashMap<String, AState> visited;
     protected int _NumberOfNodesEvaluated;
     public abstract Object getStruct();
@@ -14,6 +18,11 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
     public abstract AState removeElement(Object struct);
 
 
+    /**
+     * @param s Searchable Problem
+     * @return Solution Path
+     * the Method solving a Searchable Problem
+     */
     public Solution solve(ISearchable s){
         if (s == null){
             return null;
@@ -25,12 +34,13 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
         s.setStruct(s.getStartState());
         while (!this.isEmpty(struct)){
             AState curr = this.removeElement(struct);
+            //AState curr = s.ChangeState(this, struct);
             if (this.visited.get(curr.getName()) == null)
                 this.visited.put(curr.getName(), curr);
             else
                 continue;
             this._NumberOfNodesEvaluated++;
-            if (s.isSolved(curr, s.getGoalState()))
+            if (s.isSolved(curr))
                 return new Solution(curr);
             ArrayList<AState> neighbours = s.getAllSuccessors(curr);
             for (AState n: neighbours) {

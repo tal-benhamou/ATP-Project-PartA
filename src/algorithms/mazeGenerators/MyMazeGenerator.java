@@ -11,6 +11,7 @@ public class MyMazeGenerator extends AMazeGenerator {
      * @param columns number of columns
      * @return Maze
      * we choose the Randomized depth-first search
+     * creating a interesting and not simple maze
      */
     @Override
     public Maze generate(int rows, int columns) {
@@ -94,6 +95,12 @@ public class MyMazeGenerator extends AMazeGenerator {
         /*iterative DONE*/
     }
 
+    /**
+     * @param PosCurr array of 2 Position - index 0 = parent, index 1 = curr
+     * @param visited struct that marker the visited cells
+     * @param maze the maze
+     *             the method breaking the wall between the curr cell and his parent
+     */
     private void BreakTheWall(Position[] PosCurr, Boolean[][] visited,Maze maze) {
         Position curr = PosCurr[1];
         Position parent = PosCurr[0];
@@ -127,6 +134,7 @@ public class MyMazeGenerator extends AMazeGenerator {
      * @param visited        present 2D array of visited cells
      * @param r              present the number of rows
      * @param c              present the number of columns
+     *        the method insert all possible neighbours of curr to the StackCells
      */
     private void insertNei(Stack<Position[]> stackCells,Stack<Position[]> StackNeighbour, Position curr, Boolean[][] visited, int r, int c) {
         Random random = new Random();
@@ -162,6 +170,11 @@ public class MyMazeGenerator extends AMazeGenerator {
         }
     }
 
+    /**
+     * @param map the maze
+     *            if the rows or the columns are even we can't achieve the frame of the maze
+     *          so we randomly breaking walls from the frame of the maze
+     */
     private void randomizeBreaking(int[][] map) {
         Random r = new Random();
         int row = map.length;

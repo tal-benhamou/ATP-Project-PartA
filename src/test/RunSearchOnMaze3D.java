@@ -4,9 +4,6 @@ import algorithms.maze3D.IMazeGenerator3D;
 import algorithms.maze3D.Maze3D;
 import algorithms.maze3D.MyMaze3DGenerator;
 import algorithms.maze3D.SearchableMaze3D;
-import algorithms.mazeGenerators.IMazeGenerator;
-import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.*;
 
 import java.util.ArrayList;
@@ -15,48 +12,48 @@ public class RunSearchOnMaze3D {
     public static void main(String[] args) {
         int count=0,count2 = 0;
         double bfs=0, best=0;
-        for (int i = 0; i < 1000; i++) {
-            IMazeGenerator3D mg = new MyMaze3DGenerator();
-            Maze3D maze3D = mg.generate(100, 100, 100);
-            SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
-            try {
-                bfs = solveProblem(searchableMaze, new BreadthFirstSearch());
-                //solveProblem(searchableMaze, new DepthFirstSearch());
-                best = solveProblem(searchableMaze, new BestFirstSearch());
-            } catch (Exception e) {
-                count++;
-            }
-            if (best > bfs)
-                count2++;
-        }
-        System.out.printf("nulls : %s\n",count);
-        System.out.printf("bfs < best : %s", count2);
-//        IMazeGenerator3D mg = new MyMaze3DGenerator();
-//        long t1=0,t2=0;
-//        t1 = System.currentTimeMillis();
-//        System.out.println("Generating...");
-//        Maze3D maze3D = mg.generate(500, 500, 500);
-//        t2 = System.currentTimeMillis();
-//        System.out.println(t2-t1);
-//        SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
-//        try {
-//            System.out.println("starting solve");
-//            t1 = System.currentTimeMillis();
-//            //solveProblem2(searchableMaze, new BreadthFirstSearch());
-//            //solveProblem2(searchableMaze, new DepthFirstSearch());
-//            solveProblem2(searchableMaze, new BestFirstSearch());
-//            t2 = System.currentTimeMillis();
-//        } catch (Exception e) {
-//            System.out.println("EROR");
-//            count++;
+//        for (int i = 0; i < 1000; i++) {
+//            IMazeGenerator3D mg = new MyMaze3DGenerator();
+//            Maze3D maze3D = mg.generate(100, 100, 100);
+//            SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
+//            try {
+//                bfs = solveProblem(searchableMaze, new BreadthFirstSearch());
+//                //solveProblem(searchableMaze, new DepthFirstSearch());
+//                best = solveProblem(searchableMaze, new BestFirstSearch());
+//            } catch (Exception e) {
+//                count++;
+//            }
+//            if (best > bfs)
+//                count2++;
 //        }
-//        System.out.println(t2-t1);
+//        System.out.printf("nulls : %s\n",count);
+//        System.out.printf("bfs < best : %s", count2);
+        IMazeGenerator3D mg = new MyMaze3DGenerator();
+        long t1,t2;
+        t1 = System.currentTimeMillis();
+        System.out.println("Generating...");
+        Maze3D maze3D = mg.generate(500, 500, 500);
+        t2 = System.currentTimeMillis();
+        System.out.println(t2-t1);
+        SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
+        try {
+            System.out.println("Solving...");
+            t1 = System.currentTimeMillis();
+            //solveProblem2(searchableMaze, new BreadthFirstSearch());
+            solveProblem2(searchableMaze, new DepthFirstSearch());
+            //solveProblem2(searchableMaze, new BestFirstSearch());
+            t2 = System.currentTimeMillis();
+        } catch (Exception e) {
+            System.out.println("ERROR");
+            count++;
+        }
+        System.out.println(t2-t1);
     }
     private static double solveProblem(ISearchable domain, ISearchingAlgorithm searcher) throws Exception {
 //Solve a searching problem with a searcher
         Solution solution = searcher.solve(domain);
         if (solution == null)
-            throw new Exception("NULLpointer");
+            throw new Exception("NULL pointer");
         //System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
 //Printing Solution Path
         //System.out.println("Solution path:");
@@ -73,16 +70,16 @@ public class RunSearchOnMaze3D {
 //Solve a searching problem with a searcher
         Solution solution = searcher.solve(domain);
         if (solution == null)
-            throw new Exception("NULLpointer");
+            throw new Exception("NULL pointer");
         //System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
 //Printing Solution Path
         //System.out.println("Solution path:");
         double cost = 0;
-//        ArrayList<AState> solutionPath = solution.getSolutionPath();
-//        for (int i = 0; i < solutionPath.size(); i++) {
-//            System.out.println(String.format("%s.%s",i,solutionPath.get(i)));
+   //     ArrayList<AState> solutionPath = solution.getSolutionPath();
+    //    for (int i = 0; i < solutionPath.size(); i++) {
+    //        System.out.println(String.format("%s.%s",i,solutionPath.get(i)));
 //            cost = cost + solutionPath.get(i).get_cost();
-//        }
+    //    }
         return cost;
     }
 }

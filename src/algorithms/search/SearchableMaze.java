@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 public class SearchableMaze implements ISearchable{
     private Maze maze;
-    private boolean[][] inStruct;
+    private boolean[][] inStruct; // struct that present if specific cell from the Maze
+                                    // is in the algorithm's struct (ArrayList/Stack/PriorityQueue)
 
 
     public SearchableMaze(Maze myMaze) {
@@ -24,6 +25,11 @@ public class SearchableMaze implements ISearchable{
         return new MazeState(maze.getGoalPosition());
     }
 
+    /**
+     * @param astate Cell from the Maze
+     * @return ArrayList Of all his potential neighbours
+     * the method adding to ArrayList the potential neighbours of astate
+     */
     @Override
     public ArrayList<AState> getAllSuccessors(AState astate) {
         if (astate == null)
@@ -72,16 +78,24 @@ public class SearchableMaze implements ISearchable{
     }
 
     @Override
-    public AState ChangeState(AState aState) {
-        return aState;
+    public AState ChangeState(ASearchingAlgorithm asa, Object struct) {
+        return asa.removeElement(struct);
     }
 
-    public boolean isSolved(AState o1, AState o2){
-        if (o1 == null || o2 == null)
+    /**
+     * @param o1 cell from the Maze
+     * @return true if o1 is the goal Cell
+     */
+    public boolean isSolved(AState o1){
+        if (o1 == null)
             return false;
-        return ((MazeState)o1).getPosition().equals(((MazeState)o2).getPosition());
+        return ((MazeState)o1).getPosition().equals(this.maze.getGoalPosition());
     }
 
+    /**
+     * @param aState cell from the Maze
+     * @return true if aState is in the algorithm's struct
+     */
     @Override
     public boolean inStruct(AState aState) {
         if (aState == null)
@@ -89,6 +103,10 @@ public class SearchableMaze implements ISearchable{
         return this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()];
     }
 
+    /**
+     * @param aState cell from the Maze
+     *      marker aState as "in the algorithm's struct"
+     */
     @Override
     public void setStruct(AState aState) {
         if (aState == null)

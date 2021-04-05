@@ -3,8 +3,7 @@ package algorithms.search;
 import java.util.ArrayList;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
-    public BreadthFirstSearch() {
-    }
+    public BreadthFirstSearch() {}
 
     @Override
     public String getName() {
@@ -20,12 +19,18 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
         return new ArrayList<AState>();
     }
 
+    /**
+     * @param obj ArrayList of BFS algorithm
+     * @param neighbour potential cell
+     * @param s Searchable problem
+     *          inserting neighbour to the ArrayList if is not there yet
+     */
     @Override
-    public void insertStruct(Object obj, AState aState, ISearchable s) {
-        if (obj == null || aState == null)
+    public void insertStruct(Object obj, AState neighbour, ISearchable s) {
+        if (obj == null || neighbour == null)
             return;
-        if (!s.inStruct(aState))
-            ((ArrayList<AState>)obj).add(aState);
+        if (!s.inStruct(neighbour))
+            ((ArrayList<AState>)obj).add(neighbour);
     }
 
     @Override

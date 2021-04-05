@@ -1,6 +1,7 @@
 package algorithms.maze3D;
 
 import algorithms.mazeGenerators.Position;
+import algorithms.search.ASearchingAlgorithm;
 import algorithms.search.AState;
 import algorithms.search.ISearchable;
 import algorithms.search.MazeState;
@@ -25,6 +26,11 @@ public class SearchableMaze3D implements ISearchable {
         return new Maze3DState(maze3D.getGoalPosition());
     }
 
+       /**
+     *     @param astate Cell from the Maze
+     *     @return ArrayList Of all his potential neighbours
+     *     the method adding to ArrayList the potential neighbours of astate
+     */
     @Override
     public ArrayList<AState> getAllSuccessors(AState astate) {
         if (astate == null)
@@ -51,17 +57,25 @@ public class SearchableMaze3D implements ISearchable {
     }
 
     @Override
-    public AState ChangeState(AState aState) {
-        return aState;
+    public AState ChangeState(ASearchingAlgorithm asa, Object struct) {
+        return asa.removeElement(struct);
     }
 
+    /**
+     * @param a1 cell from the maze
+     * @return true if a1 is the goal Cell
+     */
     @Override
-    public boolean isSolved(AState a1, AState a2) {
-        if (a1 == null || a2 == null)
+    public boolean isSolved(AState a1) {
+        if (a1 == null)
             return false;
-        return ((Maze3DState)a1).getPosition().equals(((Maze3DState)a2).getPosition());
+        return ((Maze3DState)a1).getPosition().equals(this.maze3D.getGoalPosition());
     }
 
+    /**
+     * @param aState cell from the maze
+     * @return true if aState is in the algorithm's struct
+     */
     @Override
     public boolean inStruct(AState aState) {
         if (aState == null)
@@ -69,6 +83,10 @@ public class SearchableMaze3D implements ISearchable {
         return this.inStruct[((Maze3DState)aState).getPosition().getDepthIndex()][((Maze3DState)aState).getPosition().getRowIndex()][((Maze3DState)aState).getPosition().getColumnIndex()];
     }
 
+    /**
+     * @param aState cell from the maze
+     *               marker aState as "in the algorithm's struct"
+     */
     @Override
     public void setStruct(AState aState) {
         if (aState == null)
