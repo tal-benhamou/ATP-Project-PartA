@@ -15,7 +15,7 @@ public class RunSearchOnMaze3D {
     public static void main(String[] args) {
         int count=0,count2 = 0;
         double bfs=0, best=0;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             IMazeGenerator3D mg = new MyMaze3DGenerator();
             Maze3D maze3D = mg.generate(100, 100, 100);
             SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
@@ -34,6 +34,7 @@ public class RunSearchOnMaze3D {
 //        IMazeGenerator3D mg = new MyMaze3DGenerator();
 //        long t1=0,t2=0;
 //        t1 = System.currentTimeMillis();
+//        System.out.println("Generating...");
 //        Maze3D maze3D = mg.generate(500, 500, 500);
 //        t2 = System.currentTimeMillis();
 //        System.out.println(t2-t1);
@@ -41,8 +42,8 @@ public class RunSearchOnMaze3D {
 //        try {
 //            System.out.println("starting solve");
 //            t1 = System.currentTimeMillis();
-//            solveProblem2(searchableMaze, new BreadthFirstSearch());
-//            solveProblem2(searchableMaze, new DepthFirstSearch());
+//            //solveProblem2(searchableMaze, new BreadthFirstSearch());
+//            //solveProblem2(searchableMaze, new DepthFirstSearch());
 //            solveProblem2(searchableMaze, new BestFirstSearch());
 //            t2 = System.currentTimeMillis();
 //        } catch (Exception e) {
@@ -61,10 +62,11 @@ public class RunSearchOnMaze3D {
         //System.out.println("Solution path:");
         double cost = 0;
         ArrayList<AState> solutionPath = solution.getSolutionPath();
-        for (int i = 0; i < solutionPath.size(); i++) {
+        //for (int i = 0; i < solutionPath.size(); i++) {
         //    System.out.println(String.format("%s.%s",i,solutionPath.get(i)));
-            cost = cost + solutionPath.get(i).get_cost();
-        }
+           // cost = cost + solutionPath.get(i).get_cost();
+        //}
+        cost = solutionPath.get(solutionPath.size()-1).get_cost();
         return cost;
     }
     private static double solveProblem2(ISearchable domain, ISearchingAlgorithm searcher) throws Exception {

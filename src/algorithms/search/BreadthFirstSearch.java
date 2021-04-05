@@ -1,7 +1,6 @@
 package algorithms.search;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
     public BreadthFirstSearch() {
@@ -37,11 +36,6 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
     @Override
     public AState removeElement(Object obj) {
         return ((ArrayList<AState>)obj).remove(0);
-    }
-
-    @Override
-    public boolean Finish(ISearchable s, AState curr) {
-        return s.isSolved(curr, s.getGoalState());
     }
 
 }

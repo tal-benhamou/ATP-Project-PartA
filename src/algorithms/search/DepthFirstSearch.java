@@ -26,10 +26,6 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
         return ((Stack<AState>)struct).pop();
     }
 
-    @Override
-    public boolean Finish(ISearchable s, AState curr) {
-        return s.isSolved(curr, s.getGoalState());
-    }
 
     @Override
     public String getName() {
