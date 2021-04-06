@@ -194,5 +194,3 @@ public class MyMazeGenerator extends AMazeGenerator {
 
     }
 }
-
-

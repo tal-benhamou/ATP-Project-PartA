@@ -13,7 +13,7 @@ public class RunSearchOnMaze {
         double bfs, best;
             for (int i = 0; i < 1; i++) {
                 IMazeGenerator mg = new MyMazeGenerator();
-                Maze maze = mg.generate(1000, 1000);
+                Maze maze = mg.generate(4, 99);
                 try {
                     SearchableMaze searchableMaze = new SearchableMaze(maze);
                     bfs = solveProblem(searchableMaze, new BreadthFirstSearch());
@@ -31,11 +31,9 @@ public class RunSearchOnMaze {
     private static double solveProblem(ISearchable domain, ISearchingAlgorithm searcher) throws Exception {
 //Solve a searching problem with a searcher
         Solution solution = searcher.solve(domain);
-
         if(solution == null)
             throw new Exception("NullPointerException");
-
-    System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
+        System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
 //Printing Solution Path
         System.out.println("Solution path:");
         ArrayList<AState> solutionPath = solution.getSolutionPath();
@@ -45,7 +43,6 @@ public class RunSearchOnMaze {
             //cost = cost + solutionPath.get(i).get_cost();
         }
         cost = solutionPath.get(solutionPath.size()-1).get_cost();
-        System.out.println(cost);
         return cost;
         //((SearchableMaze)domain).getMaze().print();
 
