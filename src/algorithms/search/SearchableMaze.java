@@ -7,17 +7,11 @@ import java.util.ArrayList;
 
 public class SearchableMaze implements ISearchable{
     private Maze maze;
-    private boolean[][] inStruct; // struct that present if specific cell from the Maze
-                                    // is in the algorithm's struct (ArrayList/Stack/PriorityQueue)
-
 
     public SearchableMaze(Maze myMaze) {
         this.maze = myMaze;
     }
-    public void clearStruct(){
-        this.inStruct = new boolean[this.maze.getMap().length][this.maze.getMap()[0].length];
-    }
-    @Override
+     @Override
     public AState getStartState() { return new MazeState(maze.getStartPosition()); }
 
     @Override
@@ -78,8 +72,8 @@ public class SearchableMaze implements ISearchable{
     }
 
     @Override
-    public AState ChangeState(ASearchingAlgorithm asa, Object struct) {
-        return asa.removeElement(struct);
+    public AState ChangeState(ASearchingAlgorithm asa) {
+        return asa.removeElementfromStruct();
     }
 
     /**
@@ -89,29 +83,7 @@ public class SearchableMaze implements ISearchable{
     public boolean isSolved(AState o1){
         if (o1 == null)
             return false;
-        return ((MazeState)o1).getPosition().equals(this.maze.getGoalPosition());
-    }
-
-    /**
-     * @param aState cell from the Maze
-     * @return true if aState is in the algorithm's struct
-     */
-    @Override
-    public boolean inStruct(AState aState) {
-        if (aState == null)
-            return false;
-        return this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()];
-    }
-
-    /**
-     * @param aState cell from the Maze
-     *      marker aState as "in the algorithm's struct"
-     */
-    @Override
-    public void setStruct(AState aState) {
-        if (aState == null)
-            return;
-        this.inStruct[((MazeState)aState).getPosition().getRowIndex()][((MazeState)aState).getPosition().getColumnIndex()] = true;
+        return ((MazeState)o1).getPosition().equals(((MazeState)this.getGoalState()).getPosition());
     }
 
     public Maze getMaze() {

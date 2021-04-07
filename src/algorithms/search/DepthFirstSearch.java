@@ -3,38 +3,41 @@ package algorithms.search;
 import java.util.Stack;
 
 public class DepthFirstSearch extends ASearchingAlgorithm{
-    @Override
-    public Stack<AState> getStruct() {
-        return new Stack<AState>();
+    /**
+     * Stack struct for the algorithm's operation
+     */
+    Stack<AState> struct;
+
+    public DepthFirstSearch() {
+        super();
+        this.struct = new Stack<>();
     }
 
     /**
-     * @param struct Stack of the DFS iterative algorithm
      * @param neighbour Potential cell
-     * @param s Searchable problem
      *          inserting neighbour to the Stack if is not there yet
      */
     @Override
-    public void insertStruct(Object struct, AState neighbour, ISearchable s) {
-        if (struct == null || neighbour == null)
+    public void insertStruct(AState neighbour) {
+        if (neighbour == null)
             return;
-        if (!s.inStruct(neighbour))
-            ((Stack<AState>)struct).push(neighbour);
+        if (this._inStruct.get(neighbour.getName()) == null)
+            struct.push(neighbour);
     }
 
     @Override
-    public boolean isEmpty(Object struct) {
-        return ((Stack<AState>)struct).isEmpty();
+    public boolean isEmptyStruct() {
+        return struct.isEmpty();
     }
 
     @Override
-    public AState removeElement(Object struct) {
-        return ((Stack<AState>)struct).pop();
+    public AState removeElementfromStruct() {
+        return struct.pop();
     }
 
 
     @Override
     public String getName() {
-        return "Depth First Search";
+        return "DepthFirstSearch";
     }
 }
