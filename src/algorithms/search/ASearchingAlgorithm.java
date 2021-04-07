@@ -27,9 +27,9 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
     }
 
     /**
-     * @param s Searchable Problem
-     * @return Solution Path
-     * the Method solving a Searchable Problem
+     * @param s Searchable Problem.
+     * @return Solution Path.
+     * the Method solving a Searchable Problem.
      */
     public Solution solve(ISearchable s){
         if (s == null){

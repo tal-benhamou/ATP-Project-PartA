@@ -7,11 +7,11 @@ import java.util.*;
 
 public class MyMazeGenerator extends AMazeGenerator {
     /**
-     * @param rows    number of rows
-     * @param columns number of columns
-     * @return Maze
-     * we choose the Randomized depth-first search
-     * creating a interesting and not simple maze
+     * @param rows    number of rows.
+     * @param columns number of columns.
+     * @return Maze.
+     * we choose the Randomized depth-first search,
+     * creating a interesting and not simple maze.
      */
     @Override
     public Maze generate(int rows, int columns) {
@@ -93,10 +93,10 @@ public class MyMazeGenerator extends AMazeGenerator {
     }
 
     /**
-     * @param PosCurr array of 2 Position - index 0 = parent, index 1 = curr
-     * @param visited struct that marker the visited cells
-     * @param maze the maze
-     *             the method breaking the wall between the curr cell and his parent
+     * @param PosCurr array of 2 Position - index 0 = parent, index 1 = curr.
+     * @param visited struct that marker the visited cells.
+     * @param maze the maze.
+     *             the method breaking the wall between the curr cell and his parent.
      */
     private void BreakTheWall(Position[] PosCurr, Boolean[][] visited,Maze maze) {
         Position curr = PosCurr[1];
@@ -125,13 +125,13 @@ public class MyMazeGenerator extends AMazeGenerator {
     }
 
     /**
-     * @param stackCells     Stack Of All Cells
-     * @param StackNeighbour Stack of neighbours
-     * @param curr           the current cell
-     * @param visited        present 2D array of visited cells
-     * @param r              present the number of rows
-     * @param c              present the number of columns
-     *        the method insert all possible neighbours of curr to the StackCells
+     * @param stackCells     Stack Of All Cells.
+     * @param StackNeighbour Stack of neighbours.
+     * @param curr           the current cell.
+     * @param visited        present 2D array of visited cells.
+     * @param r              present the number of rows.
+     * @param c              present the number of columns.
+     *        the method insert all possible neighbours of curr to the StackCells.
      */
     private void insertNei(Stack<Position[]> stackCells,Stack<Position[]> StackNeighbour, Position curr, Boolean[][] visited, int r, int c) {
         Random random = new Random();

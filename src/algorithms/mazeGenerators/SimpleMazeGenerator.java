@@ -6,10 +6,10 @@ import java.util.Random;
 
 public class SimpleMazeGenerator extends AMazeGenerator{
     /**
-     * @param rows number rows of the maze
-     * @param columns number columns of the maze
-     * @return maze
-     * create a simple maze
+     * @param rows number rows of the maze.
+     * @param columns number columns of the maze.
+     * @return maze.
+     * create a simple maze.
      */
     @Override
     public Maze generate(int rows, int columns) {
