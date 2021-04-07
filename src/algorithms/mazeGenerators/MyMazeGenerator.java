@@ -168,9 +168,9 @@ public class MyMazeGenerator extends AMazeGenerator {
     }
 
     /**
-     * @param maze the maze
+     * @param maze the maze.
      *            if the rows or the columns are even we can't achieve the frame of the maze
-     *          so we randomly breaking walls from the frame of the maze
+     *          so we randomly breaking walls from the frame of the maze.
      */
     private void randomizeBreaking(Maze maze) {
         Random r = new Random();
