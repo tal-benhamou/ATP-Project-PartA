@@ -8,9 +8,6 @@ public interface ISearchable {
     AState getStartState();
     AState getGoalState();
     ArrayList<AState> getAllSuccessors(AState aState);
-    AState ChangeState(ASearchingAlgorithm Asa, Object obj);
+    AState ChangeState(ASearchingAlgorithm Asa);
     boolean isSolved(AState a1);
-    boolean inStruct(AState aState);
-    void setStruct(AState aState);
-    void clearStruct();
 }

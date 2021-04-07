@@ -66,14 +66,11 @@ public class MyMazeGenerator extends AMazeGenerator {
             }
             if ((maze.getStartPosition().getRowIndex() == 0) && (currRow == maze.getMap().length - 1)) {
                 GoalCells.add(curr);
-            } else if ((maze.getStartPosition().getColumnIndex() == 0) && (currCol == maze.getMap()[0].length - 1)) {
+            } else if ((maze.getStartPosition().getRowIndex() == 1) && (currCol == maze.getMap()[0].length - 1)) {
                 GoalCells.add(curr);
             }
-
-            insertNei(StackCells, StackNeighbour, curr, visited, rows, columns);
-            if (StackCells.isEmpty())
-                continue;
             BreakTheWall(PosCurr,visited,maze);
+            insertNei(StackCells, StackNeighbour, curr, visited, rows, columns);
         }
         //choosing GoalCell
         if (!GoalCells.isEmpty())
@@ -90,7 +87,7 @@ public class MyMazeGenerator extends AMazeGenerator {
             visited[gRow][gCol + 1] = true;
             maze.setGoal(new Position(gRow, gCol + 1));
         }
-        randomizeBreaking(maze.getMap());
+        randomizeBreaking(maze);
         return maze;
         /*iterative DONE*/
     }
@@ -171,24 +168,24 @@ public class MyMazeGenerator extends AMazeGenerator {
     }
 
     /**
-     * @param map the maze
+     * @param maze the maze
      *            if the rows or the columns are even we can't achieve the frame of the maze
      *          so we randomly breaking walls from the frame of the maze
      */
-    private void randomizeBreaking(int[][] map) {
+    private void randomizeBreaking(Maze maze) {
         Random r = new Random();
-        int row = map.length;
-        int col = map[0].length;
-        if (row % 2 == 0) {
+        int row = maze.getMap().length;
+        int col = maze.getMap()[0].length;
+        if (((row % 2 == 0) && (maze.getStartPosition().getRowIndex() == 0)) || ((row % 2 == 1) && maze.getStartPosition().getRowIndex() == 1)){
             for (int i = 0; i < col; i++) {
                 if (r.nextInt(2) == 0)
-                    map[row - 1][i] = 0;
+                    maze.getMap()[row - 1][i] = 0;
             }
         }
-        if (col % 2 == 0) {
+        if (col % 2 == 0){
             for (int i = 0; i < row; i++) {
                 if (r.nextInt(2) == 0)
-                    map[i][col - 1] = 0;
+                    maze.getMap()[i][col - 1] = 0;
             }
         }
 

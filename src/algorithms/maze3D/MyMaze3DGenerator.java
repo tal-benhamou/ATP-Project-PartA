@@ -66,21 +66,21 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
             visited[currDepth][currRow][currCol] = true;
             maze.getMap()[currDepth][currRow][currCol] = 0;
 
-            if ((currCol == maze.getMap()[0][0].length - 2) || (currDepth == maze.getMap().length - 2)) { //if columns is even we cant achieve the last column
+            if (((currCol == maze.getMap()[0][0].length - 2) || (currDepth == maze.getMap().length - 2))) {
                 CloseToGoal.add(curr);
             }
             if ((maze.getStartPosition().getRowIndex() == 0) && (currRow == maze.getMap()[0].length - 1) &&
                     (currDepth != 0)) {
                 GoalCells.add(curr);
-            } else if ((maze.getStartPosition().getColumnIndex() == 0) && (currCol == maze.getMap()[0][0].length - 1) &&
+            } else if ((maze.getStartPosition().getRowIndex() == 1) && (currCol == maze.getMap()[0][0].length - 1) &&
                     (currDepth != 0)) {
                 GoalCells.add(curr);
             }
 
-            insertNei(StackCells, StackNeighbour, curr, visited, depth, row, column);
-            if (StackCells.isEmpty())
-                continue;
             BreakTheWall(PosCurr, visited, maze);
+
+            insertNei(StackCells, StackNeighbour, curr, visited, depth, row, column);
+
         }
 
         /*choosing GoalCell*/

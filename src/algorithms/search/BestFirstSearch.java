@@ -5,10 +5,17 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class BestFirstSearch extends ASearchingAlgorithm{
+    /**
+     * comp - comparator
+     * struct - PriorityQueue struct for the algorithm's operation
+     */
     AStateCompare comp;
+    PriorityQueue<AState> struct;
 
     public BestFirstSearch() {
+        super();
         this.comp = new AStateCompare();
+        this.struct = new PriorityQueue<>(11,comp);
     }
 
     /**
@@ -22,59 +29,47 @@ public class BestFirstSearch extends ASearchingAlgorithm{
     }
 
     /**
-     * @return priorityQueue with appropriate comp function
-     */
-    @Override
-    public Object getStruct() {
-        return new PriorityQueue<AState>(11, comp);
-    }
-
-    /**
-     * @param struct priorityQueue of the BEST algorithm
      * @param neighbour potential cell
-     * @param s the searchable problem
      *          inserting neighbour to the priorityQueue if the neighbour is not there yet or if the neighbour's cost is less than
      *          the cost of the same cell which in the 'srtuct'
      */
     @Override
-    public void insertStruct(Object struct, AState neighbour, ISearchable s) {
-        if (struct == null || neighbour == null)
+    public void insertStruct(AState neighbour) {
+        if (neighbour == null)
             return;
-        if (s.inStruct(neighbour)) {
-            for (AState state : ((PriorityQueue<AState>) struct)) {
+        if (this._inStruct.get(neighbour.getName()) != null) {
+            for (AState state :  struct) {
                 if (state.getName().equals(neighbour.getName())) {
                     if (neighbour.get_cost() < state.get_cost()) {
-                        ((PriorityQueue<AState>) struct).remove(state);
-                        ((PriorityQueue<AState>) struct).add(neighbour);
+                        struct.remove(state);
+                        struct.add(neighbour);
                     }
                     break;
                 }
             }
         } else
-            ((PriorityQueue<AState>) struct).add(neighbour);
-
+            struct.add(neighbour);
     }
 
     /**
-     * @param struct priorityQueue of the BEST algorithm
      * @return true if the priorityQueue is empty
      */
     @Override
-    public boolean isEmpty(Object struct) {
-        return ((PriorityQueue<AState>)struct).isEmpty();
+    public boolean isEmptyStruct() {
+        return struct.isEmpty();
     }
 
     /**
-     * @param struct priorityQueue of the BEST algorithm
      * @return the minimum AState from 'struct'
      */
     @Override
-    public AState removeElement(Object struct) {
-        return ((PriorityQueue<AState>)struct).poll();
+    public AState removeElementfromStruct() {
+        return struct.poll();
     }
+
 
     @Override
     public String getName() {
-        return "Best First Search";
+        return "BestFirstSearch";
     }
 }

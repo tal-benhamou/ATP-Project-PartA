@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class SearchableMaze3D implements ISearchable {
     private Maze3D maze3D;
-    private boolean[][][] inStruct;
 
     public SearchableMaze3D(Maze3D maze3D) {
         this.maze3D = maze3D;
@@ -40,25 +39,48 @@ public class SearchableMaze3D implements ISearchable {
         int depth = this.maze3D.getMap().length;
         int rows = this.maze3D.getMap()[0].length;
         int columns = this.maze3D.getMap()[0][0].length;
-        if ((curr.getRowIndex() - 1 >= 0) && (this.maze3D.getMap()[curr.getDepthIndex()][curr.getRowIndex() - 1][curr.getColumnIndex()] != 1)) //upper
-            neighbours.add(new Maze3DState(astate, astate.get_cost() + 1,new Position3D(curr.getDepthIndex(),curr.getRowIndex() - 1, curr.getColumnIndex())));
-        if ((curr.getColumnIndex() + 1 < columns) && (this.maze3D.getMap()[curr.getDepthIndex()][curr.getRowIndex()][curr.getColumnIndex() + 1] != 1))//right
-            neighbours.add(new Maze3DState(astate,astate.get_cost() + 1,new Position3D(curr.getDepthIndex(),curr.getRowIndex(), curr.getColumnIndex() + 1)));
-        if ((curr.getRowIndex() + 1 < rows) && (this.maze3D.getMap()[curr.getDepthIndex()][curr.getRowIndex() + 1][curr.getColumnIndex()] != 1)) //down
-            neighbours.add(new Maze3DState(astate,astate.get_cost() + 1,new Position3D(curr.getDepthIndex(),curr.getRowIndex() + 1, curr.getColumnIndex())));
-        if ((curr.getColumnIndex() - 1 >= 0) && (this.maze3D.getMap()[curr.getDepthIndex()][curr.getRowIndex()][curr.getColumnIndex() - 1] != 1)) //left
-            neighbours.add(new Maze3DState(astate,astate.get_cost() + 1,new Position3D(curr.getDepthIndex(),curr.getRowIndex(), curr.getColumnIndex() - 1)));
-        if ((curr.getDepthIndex() - 1 >= 0) && (this.maze3D.getMap()[curr.getDepthIndex() - 1][curr.getRowIndex()][curr.getColumnIndex()] != 1)) // outside
-            neighbours.add(new Maze3DState(astate, astate.get_cost() + 1, new Position3D(curr.getDepthIndex() - 1,curr.getRowIndex(),curr.getColumnIndex())));
-        if ((curr.getDepthIndex() + 1 < depth) && (this.maze3D.getMap()[curr.getDepthIndex() + 1][curr.getRowIndex()][curr.getColumnIndex()] != 1)) // inside
-            neighbours.add(new Maze3DState(astate, astate.get_cost() + 1, new Position3D(curr.getDepthIndex() + 1, curr.getRowIndex(), curr.getColumnIndex())));
+        int currRow = curr.getRowIndex();
+        int currCol = curr.getColumnIndex();
+        int currDepth = curr.getDepthIndex();
+        if ((currRow - 1 >= 0) && (this.maze3D.getMap()[currDepth][currRow - 1][currCol] != 1)) //upper
+            neighbours.add(new Maze3DState(astate, astate.get_cost() + 1,new Position3D(currDepth,currRow - 1, currCol)));
+        if ((currCol + 1 < columns) && (this.maze3D.getMap()[currDepth][currRow][currCol + 1] != 1))//right
+            neighbours.add(new Maze3DState(astate,astate.get_cost() + 1,new Position3D(currDepth,currRow, currCol + 1)));
+        if ((currRow + 1 < rows) && (this.maze3D.getMap()[currDepth][currRow + 1][currCol] != 1)) //down
+            neighbours.add(new Maze3DState(astate,astate.get_cost() + 1,new Position3D(currDepth,currRow + 1, currCol)));
+        if ((currCol - 1 >= 0) && (this.maze3D.getMap()[currDepth][currRow][currCol - 1] != 1)) //left
+            neighbours.add(new Maze3DState(astate,astate.get_cost() + 1,new Position3D(currDepth,currRow, currCol - 1)));
+        if ((currDepth - 1 >= 0) && (this.maze3D.getMap()[currDepth - 1][currRow][currCol] != 1)) // outside
+            neighbours.add(new Maze3DState(astate, astate.get_cost() + 1, new Position3D(currDepth - 1,currRow,currCol)));
+        if ((currDepth + 1 < depth) && (this.maze3D.getMap()[currDepth + 1][currRow][currCol] != 1)) // inside
+            neighbours.add(new Maze3DState(astate, astate.get_cost() + 1, new Position3D(currDepth + 1, currRow, currCol)));
+//        if (((currRow - 1 >= 0) && (currCol + 1 < columns))
+//                && ((this.maze3D.getMap()[currDepth][currRow - 1][currCol] == 0) ||
+//                this.maze3D.getMap()[currDepth][currRow][currCol + 1] == 0) &&
+//                this.maze3D.getMap()[currDepth][currRow - 1][currCol + 1] != 1) //upperright
+//            neighbours.add(new Maze3DState(astate, astate.get_cost() + Math.sqrt(2), new Position3D(currDepth,currRow - 1, currCol + 1)));
+//        if (((currRow + 1 < rows) && (currCol + 1 < columns))
+//                && ((this.maze3D.getMap()[currDepth][currRow + 1][currCol] == 0) ||
+//                this.maze3D.getMap()[currDepth][currRow][currCol + 1] == 0) &&
+//                this.maze3D.getMap()[currDepth][currRow + 1][currCol + 1] != 1) //downright
+//            neighbours.add(new Maze3DState(astate,astate.get_cost() + Math.sqrt(2),new Position3D(currDepth,currRow + 1, currCol + 1)));
+//        if (((currRow + 1 < rows) && (currCol - 1 >= 0))
+//                && ((this.maze3D.getMap()[currDepth][currRow + 1][currCol] == 0) ||
+//                this.maze3D.getMap()[currDepth][currRow][currCol - 1] == 0) &&
+//                this.maze3D.getMap()[currDepth][currRow + 1][currCol - 1] != 1) //downleft
+//            neighbours.add(new Maze3DState(astate,astate.get_cost() + Math.sqrt(2),new Position3D(currDepth,currRow + 1, currCol - 1)));
+//        if (((currRow - 1 >= 0) && ( currCol - 1 >= 0))
+//                && ((this.maze3D.getMap()[currDepth][currRow][currCol - 1] == 0) ||
+//                this.maze3D.getMap()[currDepth][currRow - 1][currCol] == 0) &&
+//                this.maze3D.getMap()[currDepth][currRow - 1][currCol - 1] != 1) //upperleft
+//            neighbours.add(new Maze3DState(astate,astate.get_cost() + Math.sqrt(2),new Position3D(currDepth,currRow - 1, currCol - 1)));
 
         return neighbours;
     }
 
     @Override
-    public AState ChangeState(ASearchingAlgorithm asa, Object struct) {
-        return asa.removeElement(struct);
+    public AState ChangeState(ASearchingAlgorithm asa) {
+        return asa.removeElementfromStruct();
     }
 
     /**
@@ -72,30 +94,4 @@ public class SearchableMaze3D implements ISearchable {
         return ((Maze3DState)a1).getPosition().equals(this.maze3D.getGoalPosition());
     }
 
-    /**
-     * @param aState cell from the maze
-     * @return true if aState is in the algorithm's struct
-     */
-    @Override
-    public boolean inStruct(AState aState) {
-        if (aState == null)
-            return false;
-        return this.inStruct[((Maze3DState)aState).getPosition().getDepthIndex()][((Maze3DState)aState).getPosition().getRowIndex()][((Maze3DState)aState).getPosition().getColumnIndex()];
-    }
-
-    /**
-     * @param aState cell from the maze
-     *               marker aState as "in the algorithm's struct"
-     */
-    @Override
-    public void setStruct(AState aState) {
-        if (aState == null)
-            return;
-        this.inStruct[((Maze3DState)aState).getPosition().getDepthIndex()][((Maze3DState)aState).getPosition().getRowIndex()][((Maze3DState)aState).getPosition().getColumnIndex()] = true;
-    }
-
-    @Override
-    public void clearStruct() {
-        this.inStruct = new boolean[this.maze3D.getMap().length][this.maze3D.getMap()[0].length][this.maze3D.getMap()[0][0].length];
-    }
 }
