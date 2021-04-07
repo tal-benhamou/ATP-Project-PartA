@@ -11,7 +11,7 @@ public class RunSearchOnMaze {
         int count = 0;
         int count2 = 0;
         double bfs, best;
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 100; i++) {
                 IMazeGenerator mg = new MyMazeGenerator();
                 Maze maze = mg.generate(1000, 1000);
                 try {
@@ -35,17 +35,17 @@ public class RunSearchOnMaze {
         if(solution == null)
             throw new Exception("NullPointerException");
 
-    System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
+   // System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
 //Printing Solution Path
-        System.out.println("Solution path:");
+   //     System.out.println("Solution path:");
         ArrayList<AState> solutionPath = solution.getSolutionPath();
         double cost = 0;
-        for (int i = 0; i < solutionPath.size(); i++) {
-            System.out.println(String.format("%s.%s",i,solutionPath.get(i)));
-            //cost = cost + solutionPath.get(i).get_cost();
-        }
+//        for (int i = 0; i < solutionPath.size(); i++) {
+//            System.out.println(String.format("%s. %s",i,solutionPath.get(i)));
+//            //cost = cost + solutionPath.get(i).get_cost();
+//        }
         cost = solutionPath.get(solutionPath.size()-1).get_cost();
-        System.out.println(cost);
+       // System.out.println(cost);
         return cost;
         //((SearchableMaze)domain).getMaze().print();
 

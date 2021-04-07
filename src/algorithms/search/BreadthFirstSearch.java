@@ -3,11 +3,19 @@ package algorithms.search;
 import java.util.ArrayList;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm {
-    public BreadthFirstSearch() {}
+    /**
+     * ArrayList struct for the algorithm's operation
+     */
+    ArrayList<AState> struct;
+
+    public BreadthFirstSearch() {
+        super();
+        this.struct = new ArrayList<>();
+    }
 
     @Override
     public String getName() {
-        return "Breadth First Search";
+        return "BreadthFirstSearch";
     }
 
     @Override
@@ -15,32 +23,26 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
         return _NumberOfNodesEvaluated;
     }
 
-    public ArrayList<AState> getStruct(){
-        return new ArrayList<AState>();
-    }
-
     /**
-     * @param obj ArrayList of BFS algorithm
      * @param neighbour potential cell
-     * @param s Searchable problem
      *          inserting neighbour to the ArrayList if is not there yet
      */
     @Override
-    public void insertStruct(Object obj, AState neighbour, ISearchable s) {
-        if (obj == null || neighbour == null)
+    public void insertStruct(AState neighbour) {
+        if (neighbour == null)
             return;
-        if (!s.inStruct(neighbour))
-            ((ArrayList<AState>)obj).add(neighbour);
+        if (this._inStruct.get(neighbour.getName()) == null)
+            this.struct.add(neighbour);
     }
 
     @Override
-    public boolean isEmpty(Object obj) {
-        return ((ArrayList<AState>)obj).isEmpty();
+    public boolean isEmptyStruct() {
+        return struct.isEmpty();
     }
 
     @Override
-    public AState removeElement(Object obj) {
-        return ((ArrayList<AState>)obj).remove(0);
+    public AState removeElementfromStruct() {
+        return this.struct.remove(0);
     }
 
 }

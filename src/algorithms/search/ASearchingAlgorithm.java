@@ -7,16 +7,24 @@ import java.util.HashMap;
 public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
 
     /**
-     * visited : HashMap of Cells that we visit already
-     * _NumberOfNodesEvaluated : number of nodes we visited
+     * _visited : HashMap of Cells that we visit already.
+     * _NumberOfNodesEvaluated : number of nodes we visited.
+     * _inStruct : HashMap that present if specific AState from ISearchable
+     *            is in the algorithm's struct (ArrayList/Stack/PriorityQueue).
      */
-    protected HashMap<String, AState> visited;
+    protected HashMap<String, AState> _visited;
+    protected HashMap<String, AState> _inStruct;
     protected int _NumberOfNodesEvaluated;
-    public abstract Object getStruct();
-    public abstract void insertStruct(Object struct, AState aState, ISearchable searchable);
-    public abstract boolean isEmpty(Object struct);
-    public abstract AState removeElement(Object struct);
+    public abstract void insertStruct(AState aState);
+    public abstract boolean isEmptyStruct();
+    public abstract AState removeElementfromStruct();
+    //public abstract void resetStruct();
 
+    public ASearchingAlgorithm() {
+        this._visited = new HashMap<>();
+        this._inStruct = new HashMap<>();
+        this._NumberOfNodesEvaluated = 0;
+    }
 
     /**
      * @param s Searchable Problem
@@ -27,26 +35,22 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
         if (s == null){
             return null;
         }
-        s.clearStruct();
-        Object struct = this.getStruct();
-        this.visited = new HashMap<>();
-        this.insertStruct(struct, s.getStartState(), s);
-        s.setStruct(s.getStartState());
-        while (!this.isEmpty(struct)){
-            AState curr = this.removeElement(struct);
-            //AState curr = s.ChangeState(this, struct);
-            if (this.visited.get(curr.getName()) == null)
-                this.visited.put(curr.getName(), curr);
+        insertStruct(s.getStartState());
+        _inStruct.put(s.getStartState().getName(),s.getStartState());
+        while (!isEmptyStruct()){
+            AState curr = removeElementfromStruct();
+            if (_visited.get(curr.getName()) == null)
+                _visited.put(curr.getName(), curr);
             else
                 continue;
-            this._NumberOfNodesEvaluated++;
+            _NumberOfNodesEvaluated++;
             if (s.isSolved(curr))
                 return new Solution(curr);
             ArrayList<AState> neighbours = s.getAllSuccessors(curr);
             for (AState n: neighbours) {
-                if (this.visited.get(n.getName()) == null){
-                    this.insertStruct(struct, n, s);
-                    s.setStruct(n);
+                if (_visited.get(n.getName()) == null){
+                    insertStruct(n);
+                    _inStruct.put(n.getName(),n);
                 }
             }
         }

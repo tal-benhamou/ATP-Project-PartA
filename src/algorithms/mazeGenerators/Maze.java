@@ -40,9 +40,8 @@ public class Maze {
     }
 
     public void print(){
-        System.out.println("{");
         for (int i = 0; i < map.length; i++) {
-            System.out.print("{");
+            System.out.print("{ ");
             for (int j = 0; j < map[0].length; j++) {
 
                 if (i == start.getRowIndex() && j == start.getColumnIndex())
@@ -54,6 +53,5 @@ public class Maze {
             }
             System.out.println("}");
         }
-        System.out.println("}");
     }
 }

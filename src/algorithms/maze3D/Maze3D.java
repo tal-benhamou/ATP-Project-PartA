@@ -39,10 +39,9 @@ public class Maze3D {
     public void print(){
         System.out.println("{");
         for (int i = 0; i < _map.length; i++) {
-            System.out.println(", {");
             for (int j = 0; j < _map[0].length; j++) {
-                System.out.print("{");
-                for (int k = 0; k < _map[0][0].length ; k++) {
+                System.out.print("{ ");
+                for (int k = 0; k < _map[0][0].length; k++) {
                     if (i == _start.getDepthIndex() && j == _start.getRowIndex() && k == _start.getColumnIndex())
                         System.out.print('S' + " ");
                     else if (i == _goal.getDepthIndex() && j == _goal.getRowIndex() && k == _goal.getColumnIndex())
@@ -52,7 +51,12 @@ public class Maze3D {
                 }
                 System.out.println("}");
             }
-            System.out.println("}");
+            if (i != _map.length - 1) {
+                for (int j = 0; j < _map[0][0].length; j++) {
+                    System.out.print("--");
+                }
+                System.out.println("---");
+            }
         }
         System.out.println("}");
     }
