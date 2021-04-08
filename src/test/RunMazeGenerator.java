@@ -22,7 +22,7 @@ public class RunMazeGenerator {
 //                count++;
 //        }
 //        System.out.println(count);
-        Maze maze = mazeGenerator.generate(4/*rows*/, 4/*columns*/);
+        Maze maze = mazeGenerator.generate(14/*rows*/, 14/*columns*/);
         // prints the maze
         maze.print();
         // get the maze entrance
