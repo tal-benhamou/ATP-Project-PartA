@@ -33,40 +33,40 @@ public class SearchableMaze implements ISearchable{
         int rows = this.maze.getMap().length;
         int columns = this.maze.getMap()[0].length;
         if ((curr.getRowIndex() - 1 >= 0) && (this.maze.getMap()[curr.getRowIndex() - 1][curr.getColumnIndex()] != 1)){ //upper
-            neighbours.add(new MazeState(astate,astate.get_cost() + 1,new Position(curr.getRowIndex() - 1, curr.getColumnIndex())));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 10,new Position(curr.getRowIndex() - 1, curr.getColumnIndex())));
         }
         if (((curr.getRowIndex() - 1 >= 0) && (curr.getColumnIndex() + 1 < columns))
                 && ((this.maze.getMap()[curr.getRowIndex()-1][curr.getColumnIndex()] == 0) ||
                     this.maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() + 1] == 0) &&
                         this.maze.getMap()[curr.getRowIndex() - 1][curr.getColumnIndex() + 1] != 1){ //upperright
-            neighbours.add(new MazeState(astate, astate.get_cost() + Math.sqrt(2), new Position(curr.getRowIndex() - 1, curr.getColumnIndex() + 1)));
+            neighbours.add(new MazeState(astate, astate.get_cost() + 15, new Position(curr.getRowIndex() - 1, curr.getColumnIndex() + 1)));
         }
         if ((curr.getColumnIndex() + 1 < columns) && (this.maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() + 1] != 1)){ //right
-            neighbours.add(new MazeState(astate,astate.get_cost() + 1,new Position(curr.getRowIndex(), curr.getColumnIndex() + 1)));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 10,new Position(curr.getRowIndex(), curr.getColumnIndex() + 1)));
         }
         if (((curr.getRowIndex() + 1 < rows) && (curr.getColumnIndex() + 1 < columns))
                 && ((this.maze.getMap()[curr.getRowIndex() + 1][curr.getColumnIndex()] == 0) ||
                     this.maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() + 1] == 0) &&
                         this.maze.getMap()[curr.getRowIndex() + 1][curr.getColumnIndex() + 1] != 1){ //downright
-            neighbours.add(new MazeState(astate,astate.get_cost() + Math.sqrt(2),new Position(curr.getRowIndex() + 1, curr.getColumnIndex() + 1)));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 15,new Position(curr.getRowIndex() + 1, curr.getColumnIndex() + 1)));
         }
         if ((curr.getRowIndex() + 1 < rows) && (this.maze.getMap()[curr.getRowIndex() + 1][curr.getColumnIndex()] != 1)){ //down
-            neighbours.add(new MazeState(astate,astate.get_cost() + 1,new Position(curr.getRowIndex() + 1, curr.getColumnIndex())));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 10,new Position(curr.getRowIndex() + 1, curr.getColumnIndex())));
         }
         if (((curr.getRowIndex() + 1 < rows) && (curr.getColumnIndex() - 1 >= 0))
                 && ((this.maze.getMap()[curr.getRowIndex() + 1][curr.getColumnIndex()] == 0) ||
                     this.maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() - 1] == 0) &&
                         this.maze.getMap()[curr.getRowIndex() + 1][curr.getColumnIndex() - 1] != 1){ //downleft
-            neighbours.add(new MazeState(astate,astate.get_cost() + Math.sqrt(2),new Position(curr.getRowIndex() + 1, curr.getColumnIndex() - 1)));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 15,new Position(curr.getRowIndex() + 1, curr.getColumnIndex() - 1)));
         }
         if ((curr.getColumnIndex() - 1 >= 0) && (this.maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() - 1] != 1)){ //left
-            neighbours.add(new MazeState(astate,astate.get_cost() + 1,new Position(curr.getRowIndex(), curr.getColumnIndex() - 1)));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 10,new Position(curr.getRowIndex(), curr.getColumnIndex() - 1)));
         }
         if (((curr.getRowIndex() - 1 >= 0) && ( curr.getColumnIndex() - 1 >= 0))
             && ((this.maze.getMap()[curr.getRowIndex()][curr.getColumnIndex() - 1] == 0) ||
                     this.maze.getMap()[curr.getRowIndex() - 1][curr.getColumnIndex()] == 0) &&
                         this.maze.getMap()[curr.getRowIndex() - 1][curr.getColumnIndex() - 1] != 1){ //upperleft
-            neighbours.add(new MazeState(astate,astate.get_cost() + Math.sqrt(2),new Position(curr.getRowIndex() - 1, curr.getColumnIndex() - 1)));
+            neighbours.add(new MazeState(astate,astate.get_cost() + 15,new Position(curr.getRowIndex() - 1, curr.getColumnIndex() - 1)));
         }
         return neighbours;
     }
