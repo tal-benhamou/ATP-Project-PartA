@@ -43,7 +43,8 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
             }
         }
         ArrayList<Position3D> GoalCells = new ArrayList<>();
-        ArrayList<Position3D> CloseToGoal = new ArrayList<>();
+        ArrayList<Position3D> CloseToGoalColumn = new ArrayList<>();
+        ArrayList<Position3D> CloseToGoalRow = new ArrayList<>();
         int currRow, currCol, currDepth;
         /*iterative*/
         Stack<Position3D[]> StackCells = new Stack<>();
@@ -66,8 +67,11 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
             visited[currDepth][currRow][currCol] = true;
             maze.getMap()[currDepth][currRow][currCol] = 0;
 
-            if (((currCol == maze.getMap()[0][0].length - 2) || (currDepth == maze.getMap().length - 2))) {
-                CloseToGoal.add(curr);
+            if ((currCol == maze.getMap()[0][0].length - 2) || (currDepth == maze.getMap().length - 2)) {
+                CloseToGoalColumn.add(curr);
+            }
+            if ((currRow == maze.getMap()[0].length - 2) || (currDepth == maze.getMap().length - 2)){
+                CloseToGoalRow.add(curr);
             }
             if ((maze.getStartPosition().getRowIndex() == 0) && (currRow == maze.getMap()[0].length - 1) &&
                     (currDepth != 0)) {
@@ -86,21 +90,39 @@ public class MyMaze3DGenerator extends AMaze3DGenerator {
         /*choosing GoalCell*/
         if (!GoalCells.isEmpty())
             maze.setGoal(GoalCells.get(r.nextInt(GoalCells.size())));
-        else { //we want to choose randomly cell close to the last column and open the wall for the goalCell.
+        else { //we need to choose one wall to broken for goal state. --> from columns or from rows.
             Position3D CloseToGoalCell;
-            int gRow, gCol, gDepth;
-            CloseToGoalCell = CloseToGoal.get(r.nextInt(CloseToGoal.size()));
-            gRow = CloseToGoalCell.getRowIndex();
-            gCol = CloseToGoalCell.getColumnIndex();
-            gDepth = CloseToGoalCell.getDepthIndex();
-            if (gDepth == maze.getMap().length - 2) {
-                maze.getMap()[gDepth + 1][gRow][gCol] = 0;
-                visited[gDepth + 1][gRow][gCol] = true;
-                maze.setGoal(new Position3D(gDepth + 1, gRow, gCol));
-            } else {
-                maze.getMap()[gDepth][gRow][gCol + 1] = 0;
-                visited[gDepth][gRow][gCol + 1] = true;
-                maze.setGoal(new Position3D(gDepth, gRow, gCol + 1));
+            if (!CloseToGoalColumn.isEmpty()) {//we want to choose randomly cell close to the last column/depth and open the wall for the goalCell.
+                CloseToGoalCell = CloseToGoalColumn.get(r.nextInt(CloseToGoalColumn.size()));
+                int gRow, gCol, gDepth;
+                gRow = CloseToGoalCell.getRowIndex();
+                gCol = CloseToGoalCell.getColumnIndex();
+                gDepth = CloseToGoalCell.getDepthIndex();
+                if (gDepth == maze.getMap().length - 2) {
+                    maze.getMap()[gDepth + 1][gRow][gCol] = 0;
+                    visited[gDepth + 1][gRow][gCol] = true;
+                    maze.setGoal(new Position3D(gDepth + 1, gRow, gCol));
+                } else {
+                    maze.getMap()[gDepth][gRow][gCol + 1] = 0;
+                    visited[gDepth][gRow][gCol + 1] = true;
+                    maze.setGoal(new Position3D(gDepth, gRow, gCol + 1));
+                }
+            }
+            else{//we want to choose randomly cell close to the last row/depth and open the wall for the goalCell.
+                CloseToGoalCell = CloseToGoalRow.get(r.nextInt(CloseToGoalRow.size()));
+                int gRow, gCol, gDepth;
+                gRow = CloseToGoalCell.getRowIndex();
+                gCol = CloseToGoalCell.getColumnIndex();
+                gDepth = CloseToGoalCell.getDepthIndex();
+                if (gDepth == maze.getMap().length - 2) {
+                    maze.getMap()[gDepth + 1][gRow][gCol] = 0;
+                    visited[gDepth + 1][gRow][gCol] = true;
+                    maze.setGoal(new Position3D(gDepth + 1, gRow, gCol));
+                } else {
+                    maze.getMap()[gDepth][gRow + 1][gCol] = 0;
+                    visited[gDepth][gRow + 1][gCol] = true;
+                    maze.setGoal(new Position3D(gDepth, gRow + 1, gCol));
+                }
             }
         }
         randomizeBreaking(maze.getMap());

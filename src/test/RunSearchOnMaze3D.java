@@ -32,7 +32,7 @@ public class RunSearchOnMaze3D {
         long t1,t2;
         t1 = System.currentTimeMillis();
         System.out.println("Generating...");
-        Maze3D maze3D = mg.generate(12, 32, 2);
+        Maze3D maze3D = mg.generate(12, 14, 14);
         t2 = System.currentTimeMillis();
         System.out.println(t2-t1);
         SearchableMaze3D searchableMaze = new SearchableMaze3D(maze3D);
@@ -40,7 +40,7 @@ public class RunSearchOnMaze3D {
             System.out.println("Solving...");
             t1 = System.currentTimeMillis();
             solveProblem(searchableMaze, new BreadthFirstSearch());
-            //solveProblem(searchableMaze, new DepthFirstSearch());
+            solveProblem(searchableMaze, new DepthFirstSearch());
             solveProblem(searchableMaze, new BestFirstSearch());
             t2 = System.currentTimeMillis();
         } catch (Exception e) {
