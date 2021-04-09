@@ -3,7 +3,7 @@ package algorithms.search;
 public abstract class AState {
 
     private AState _parent = null;
-    private double _cost = 1;
+    private double _cost = 10;
     private String name = null;
 
     public AState(AState parent, double cost, String name) {
