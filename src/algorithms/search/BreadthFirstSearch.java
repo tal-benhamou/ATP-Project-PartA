@@ -45,4 +45,12 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
         return this.struct.remove(0);
     }
 
+    @Override
+    public void resetStruct() {
+        this._inStruct.clear();
+        this._visited.clear();
+        this._NumberOfNodesEvaluated = 0;
+        this.struct.clear();
+    }
+
 }

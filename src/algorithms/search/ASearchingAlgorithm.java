@@ -18,7 +18,7 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
     public abstract void insertStruct(AState aState);
     public abstract boolean isEmptyStruct();
     public abstract AState removeElementfromStruct();
-    //public abstract void resetStruct();
+    public abstract void resetStruct();
 
     public ASearchingAlgorithm() {
         this._visited = new HashMap<>();
@@ -35,6 +35,7 @@ public abstract class ASearchingAlgorithm implements ISearchingAlgorithm{
         if (s == null){
             return null;
         }
+        this.resetStruct();
         insertStruct(s.getStartState());
         _inStruct.put(s.getStartState().getName(),s.getStartState());
         while (!isEmptyStruct()){

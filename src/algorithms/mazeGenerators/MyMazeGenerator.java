@@ -64,44 +64,45 @@ public class MyMazeGenerator extends AMazeGenerator {
 
             if (currCol == maze.getMap()[0].length - 2) //if columns is even we c`ant achieve the last column
                 CloseToGoalColumn.add(curr);
-            if (currRow == maze.getMap().length-2) //if rows is even we c`ant achieve the last row
+            if (currRow == maze.getMap().length - 2) //if rows is even we c`ant achieve the last row
                 CloseToGoalRow.add(curr);
 
             if ((maze.getStartPosition().getRowIndex() == 0) && (currRow == maze.getMap().length - 1)) {
                 GoalCells.add(curr);
-            } else if ((maze.getStartPosition().getRowIndex() == 1)&&(currCol == maze.getMap()[0].length - 1)){
+            }
+            else if ((maze.getStartPosition().getRowIndex() == 1) && (currCol == maze.getMap()[0].length - 1)){
                 GoalCells.add(curr);
             }
             BreakTheWall(PosCurr,visited,maze);
             insertNei(StackCells, StackNeighbour, curr, visited, rows, columns);
         }
         //choosing GoalCell
-        if (!GoalCells.isEmpty())
-            maze.setGoal(GoalCells.get(r.nextInt(GoalCells.size())));
-        else { //we need to choose one wall to broken for goal state. --> from columns or from rows.
-            Position CloseToGoalCell;
-            int gRow, gCol;
-            if (!CloseToGoalColumn.isEmpty()) {//we want to choose randomly cell close to the last column and open the wall for the goalCell.
-                CloseToGoalCell = CloseToGoalColumn.get(r.nextInt(CloseToGoalColumn.size()));
+        Position CloseToGoalCell;
+        int gRow, gCol;
+        if ((rows % 2 == 0) && (maze.getStartPosition().getRowIndex() == 0)){ //choose from close to goal ROWS
+            CloseToGoalCell = CloseToGoalRow.get(r.nextInt(CloseToGoalRow.size()));
+            gRow = CloseToGoalCell.getRowIndex();
+            gCol = CloseToGoalCell.getColumnIndex();
 
-                gRow = CloseToGoalCell.getRowIndex();
-                gCol = CloseToGoalCell.getColumnIndex();
-
-                maze.getMap()[gRow][gCol + 1] = 0;
-                visited[gRow][gCol + 1] = true;
-                maze.setGoal(new Position(gRow, gCol + 1));
-            }
-            else{//we want to choose randomly cell close to the last row and open the wall for the goalCell.
-                CloseToGoalCell = CloseToGoalRow.get(r.nextInt(CloseToGoalRow.size()));
-
-                gRow = CloseToGoalCell.getRowIndex();
-                gCol = CloseToGoalCell.getColumnIndex();
-
-                maze.getMap()[gRow + 1][gCol] = 0;
-                visited[gRow + 1][gCol] = true;
-                maze.setGoal(new Position(gRow + 1, gCol));
-            }
+            maze.getMap()[gRow + 1][gCol] = 0;
+            visited[gRow + 1][gCol] = true;
+            maze.setGoal(new Position(gRow + 1, gCol));
         }
+        else if ((columns % 2 == 0) && (maze.getStartPosition().getRowIndex() == 1)){ //choose from close to goal COLUMNS
+            CloseToGoalCell = CloseToGoalColumn.get(r.nextInt(CloseToGoalColumn.size()));
+
+            gRow = CloseToGoalCell.getRowIndex();
+            gCol = CloseToGoalCell.getColumnIndex();
+
+            maze.getMap()[gRow][gCol + 1] = 0;
+            visited[gRow][gCol + 1] = true;
+            maze.setGoal(new Position(gRow, gCol + 1));
+        }
+        else { // standard option
+            if (!GoalCells.isEmpty())
+                maze.setGoal(GoalCells.get(r.nextInt(GoalCells.size())));
+        }
+
         randomizeBreaking(maze);
         return maze;
         /*iterative DONE*/

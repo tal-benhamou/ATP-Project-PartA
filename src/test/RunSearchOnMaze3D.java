@@ -1,6 +1,6 @@
 package test;
 
-import algorithms.maze3D.IMazeGenerator3D;
+import algorithms.maze3D.IMaze3DGenerator;
 import algorithms.maze3D.Maze3D;
 import algorithms.maze3D.MyMaze3DGenerator;
 import algorithms.maze3D.SearchableMaze3D;
@@ -28,7 +28,7 @@ public class RunSearchOnMaze3D {
 //        }
 //        System.out.printf("nulls : %s\n",count);
 //        System.out.printf("bfs < best : %s", count2);
-        IMazeGenerator3D mg = new MyMaze3DGenerator();
+        IMaze3DGenerator mg = new MyMaze3DGenerator();
         long t1,t2;
         t1 = System.currentTimeMillis();
         System.out.println("Generating...");
