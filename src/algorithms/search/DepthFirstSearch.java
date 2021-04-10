@@ -35,6 +35,14 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
         return struct.pop();
     }
 
+    @Override
+    public void resetStruct() {
+        this._inStruct.clear();
+        this._visited.clear();
+        this._NumberOfNodesEvaluated = 0;
+        this.struct.clear();
+    }
+
 
     @Override
     public String getName() {

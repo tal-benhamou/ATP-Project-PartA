@@ -67,6 +67,14 @@ public class BestFirstSearch extends ASearchingAlgorithm{
         return struct.poll();
     }
 
+    @Override
+    public void resetStruct() {
+        this._inStruct.clear();
+        this._visited.clear();
+        this._NumberOfNodesEvaluated = 0;
+        this.struct.clear();
+    }
+
 
     @Override
     public String getName() {
