@@ -58,7 +58,4 @@ class BestFirstSearchTest {
         best.insertStruct(null);
         assertEquals(0, best.struct.size());
     }
-
-
-
 }

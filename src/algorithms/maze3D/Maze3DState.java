@@ -11,7 +11,7 @@ public class Maze3DState extends AState {
         this._pos = pos;
     }
     public Maze3DState(Position3D pos){
-        super(null, 1, pos.toString());
+        super(null, 10, pos.toString());
         this._pos = pos;
     }
     public Position3D getPosition() {

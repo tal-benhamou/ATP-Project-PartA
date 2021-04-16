@@ -47,7 +47,7 @@ public class RunSearchOnMaze3D {
             System.out.println("ERROR");
             count++;
         }
-        System.out.println(t2-t1);
+        System.out.println("time: "+(t2-t1));
     }
     private static double solveProblem(ISearchable domain, ISearchingAlgorithm searcher) throws Exception {
 //Solve a searching problem with a searcher

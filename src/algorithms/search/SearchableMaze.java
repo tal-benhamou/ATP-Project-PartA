@@ -71,11 +71,6 @@ public class SearchableMaze implements ISearchable{
         return neighbours;
     }
 
-    @Override
-    public AState ChangeState(ASearchingAlgorithm asa) {
-        return asa.removeElementfromStruct();
-    }
-
     /**
      * @param o1 cell from the Maze
      * @return true if o1 is the goal Cell
