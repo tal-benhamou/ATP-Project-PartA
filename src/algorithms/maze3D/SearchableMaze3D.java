@@ -57,12 +57,6 @@ public class SearchableMaze3D implements ISearchable {
 
         return neighbours;
     }
-
-    @Override
-    public AState ChangeState(ASearchingAlgorithm asa) {
-        return asa.removeElementfromStruct();
-    }
-
     /**
      * @param a1 cell from the maze
      * @return true if a1 is the goal Cell
