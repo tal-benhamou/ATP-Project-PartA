@@ -6,7 +6,7 @@ import algorithms.mazeGenerators.MyMazeGenerator;
 
 import java.io.*;
 
-public class ServerStrategyGenerateMaze implements ServerStrategy{
+public class ServerStrategyGenerateMaze implements IServerStrategy {
 
 
     @Override
