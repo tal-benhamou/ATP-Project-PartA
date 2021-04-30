@@ -3,37 +3,39 @@ package Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Server {
 
     private int port;
     private int listeningIntervalMS;
-    private ServerStrategy strategy;
+    private IServerStrategy strategy;
     private boolean stop;
+    private ExecutorService threadPool;
 
-    public Server(int port, int listeningIntervalMS, ServerStrategy strategy) {
+    public Server(int port, int listeningIntervalMS, IServerStrategy strategy) {
         this.port = port;
         this.listeningIntervalMS = listeningIntervalMS;
         this.strategy = strategy;
+        this.threadPool = Executors.newFixedThreadPool(2);
     }
 
     public void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningIntervalMS);
-            ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
             while (!stop) {
                 try {
                     Socket client = serverSocket.accept();
-                    executor.submit(() -> handleClient(client));
+                    threadPool.execute(() -> handleClient(client));
                 } catch (SocketTimeoutException ex) {
                     System.out.println("Socket TimeOut");
                 }
             }
+            serverSocket.close();
+            threadPool.shutdownNow();
         }
          catch (IOException e) {
         e.printStackTrace();
