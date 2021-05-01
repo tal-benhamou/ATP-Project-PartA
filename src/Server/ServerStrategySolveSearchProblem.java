@@ -17,6 +17,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
             ASearchingAlgorithm alg;
             Configurations conf = Configurations.Instance();
+            boolean found = false;
 
             /*checking which searching algorithm*/
             if (conf.getProperty("mazeSearchingAlgorithm") == "BFS")
@@ -39,50 +40,57 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             ObjectOutputStream outToFile;
             File dir = new File(tempDirectoryPath);
 
-
-            //OutputStream out = new FileOutputStream(tempDirectoryPath);
+            FileInputStream fileinstream;
+            FileOutputStream fileOutputStream;
 
 //obj[0] = maze (byte[]), obj[1] = solution, obj[2] = algorithm search
-            for (File file: Objects.requireNonNull(dir.listFiles())) {
-                if (file.isFile()){
-                    FileInputStream fileinstream = new FileInputStream(file);
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    inFromFile = new ObjectInputStream(fileinstream);
-                    outToFile = new ObjectOutputStream(fileOutputStream);
-                    mazeInFile = ((byte[])((Object[])inFromFile.readObject())[0]);
-                    solutionInFile = ((Solution)((Object[])inFromFile.readObject())[1]);
-                    algNameinFile = ((String)((Object[])inFromFile.readObject())[2]);
-                    if (Arrays.equals(maze.toByteArray(), mazeInFile) && algNameinFile.equals(conf.getProperty("mazeSearchingAlgorithm")))
-                        toClient.writeObject(solutionInFile);
-                    else {
-                        SearchableMaze problem = new SearchableMaze(maze);
-                        Solution solution = alg.solve(problem);
-                        Object[] obj = new Object[3];
-                        obj[0] = maze;
-                        obj[1] = solution;
-                        obj[2] = conf.getProperty("mazeSearchingAlgorithm");
-
-
-
-                        toClient.writeObject(solution);
+            if (dir.listFiles() != null) {
+                for (File file : Objects.requireNonNull(dir.listFiles())) {
+                    if (file.isFile()) {
+                        fileinstream = new FileInputStream(file);
+                        inFromFile = new ObjectInputStream(fileinstream);
+                        mazeInFile = ((byte[]) ((Object[]) inFromFile.readObject())[0]);
+                        solutionInFile = ((Solution) ((Object[]) inFromFile.readObject())[1]);
+                        algNameinFile = ((String) ((Object[]) inFromFile.readObject())[2]);
+                        if (Arrays.equals(maze.toByteArray(), mazeInFile) && algNameinFile.equals(conf.getProperty("mazeSearchingAlgorithm"))) {
+                            toClient.writeObject(solutionInFile);
+                            toClient.flush();
+                            inFromFile.close();
+                            fileinstream.close();
+                            found = true;
+                            break;
+                        }
+                        else
+                        {
+                            inFromFile.close();
+                            fileinstream.close();
+                        }
                     }
-
                 }
             }
+            if (!found){
+                SearchableMaze problem = new SearchableMaze(maze);
+                Solution solution = alg.solve(problem);
+                Object[] obj = new Object[3];
+                obj[0] = maze;
+                obj[1] = solution;
+                obj[2] = conf.getProperty("mazeSearchingAlgorithm");
+//                    fileOutputStream = new FileOutputStream(dir);
+//                    Writer writeFile = new BufferedWriter(new FileWriter(dir));
+//                    outToFile = new ObjectOutputStream(fileOutputStream);
+//                    writeFile.writeObject(obj);
 
+                File file = new File(dir, "new");
+                fileOutputStream = new FileOutputStream(file);
+                outToFile = new ObjectOutputStream(fileOutputStream);
+                outToFile.writeObject(obj);
+                outToFile.flush();
+                outToFile.close();
 
+            }
+            toClient.close();
+            fromClient.close();
 
-
-
-
-            //String tmpdir = Files.createTempDirectory("tmpDirPrefix").toFile().getAbsolutePath();
-
-
-            //File.createTempFile();
-
-
-            //toClient.writeObject(solution);
-            toClient.flush();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
