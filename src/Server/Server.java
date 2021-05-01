@@ -19,10 +19,14 @@ public class Server {
         this.port = port;
         this.listeningIntervalMS = listeningIntervalMS;
         this.strategy = strategy;
-        this.threadPool = Executors.newFixedThreadPool(2);
+        this.threadPool = Executors.newFixedThreadPool(Integer.parseInt(Configurations.Instance().getProperty("threadPoolSize")));
     }
 
     public void start() {
+        new Thread(this::runServer).start();
+    }
+
+    private void runServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningIntervalMS);
@@ -37,8 +41,8 @@ public class Server {
             serverSocket.close();
             threadPool.shutdownNow();
         }
-         catch (IOException e) {
-        e.printStackTrace();
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -47,8 +51,9 @@ public class Server {
 
         try {
             strategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
+            Thread.sleep(10000);
             clientSocket.close();
-        }catch (IOException e){
+        }catch (IOException | InterruptedException e){
             System.out.println("IOException");
         }
         System.out.println("Done With Socket : " + clientSocket.toString());

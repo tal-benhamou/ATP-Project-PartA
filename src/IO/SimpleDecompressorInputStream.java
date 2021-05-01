@@ -18,12 +18,12 @@ public class SimpleDecompressorInputStream extends InputStream {
 
     @Override
     public int read(byte[] b) throws IOException {
-        byte[] result = new byte[b.length - 13];
+        byte[] result = new byte[b.length - 7];
         int even = 0;
         int index = 0;
         int count;
-        byte[] tmp = new byte[13];
-        in.read(tmp,0,13);
+        byte[] tmp = new byte[7];
+        in.read(tmp,0,7);
         // Decompressing
         while ((count = in.read(b))!= -1){
             for (int i=0; i < (count); i++){
@@ -46,11 +46,11 @@ public class SimpleDecompressorInputStream extends InputStream {
         }
 
         for (int i = 0 ; i< b.length; i++){
-            if(i<13){
+            if(i<7){
                 b[i]=tmp[i];
             }
             else
-                b[i]=result[i-13];
+                b[i]=result[i-7];
         }
 
         in.close();

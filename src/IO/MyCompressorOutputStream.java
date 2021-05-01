@@ -22,19 +22,19 @@ public class MyCompressorOutputStream extends OutputStream {
         byte[] result = Compress(b);
         out.write(result);
         out.flush();
-        out.close();
+       // out.close();
     }
 
-    private byte[] Compress(byte[] b) {
+    public byte[] Compress(byte[] b) {
         byte[] compressed = new byte[b.length];
-        byte compress = 0;
+        byte compress;
         int j = 0;
-        int count = 0;
         byte[] result;
-        int index = 13;
+        int index = 7;
+
 
         while (j < compressed.length) {
-            if (j < 13) {
+            if (j < 7) {
                 compressed[j] = b[j];
                 j++;
             }
@@ -48,12 +48,12 @@ public class MyCompressorOutputStream extends OutputStream {
                 j+=8;
             }
         }
-        if ((b.length - 13) % 8 != 0) {
-            result = new byte[13 + (b.length - 13) / 8 + 1 ];// 13 : cons + number of compressings + sheerit + count : number of dipun
+        if ((b.length - 7) % 8 != 0) {
+            result = new byte[7 + (b.length - 7) / 8 + 1 ];// 7 : cons + number of compressings + sheerit + count : number of dipun
             System.arraycopy(compressed, 0, result, 0, result.length);
         }
         else {
-            result = new byte[13 + (b.length - 13) / 8];
+            result = new byte[7 + (b.length - 7) / 8];
             System.arraycopy(compressed, 0, result, 0, result.length);
         }
 

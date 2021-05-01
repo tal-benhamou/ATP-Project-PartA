@@ -18,12 +18,12 @@ public class MyDecompressorInputStream extends InputStream{
 
     @Override
     public int read(byte[] b) throws IOException {
-        byte[] justmap = new byte[b.length - 13];
+        byte[] justmap = new byte[b.length - 7];
         int i = 0;
         int eight;
         int count, num;
-        byte[] metadata = new byte[13];
-        in.read(metadata,0,13);
+        byte[] metadata = new byte[7];
+        in.read(metadata,0,7);
 
         while ((count = in.read(b)) != -1){
             for (int j = 0 ; j < count ; j++) {
@@ -48,10 +48,10 @@ public class MyDecompressorInputStream extends InputStream{
             }
         }
         for (int k = 0; k < b.length; k++){
-            if (k<13)
+            if (k<7)
                 b[k] = metadata[k];
             else
-                b[k] = justmap[k - 13];
+                b[k] = justmap[k - 7];
         }
         in.close();
         return 1;

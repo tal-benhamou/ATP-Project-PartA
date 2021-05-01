@@ -48,12 +48,12 @@ public class SimpleCompressorOutputStream extends OutputStream {
     public byte[] Compress(byte[] b){
         int countzero=0;
         int countone = 0;
-        int indexarray = 13;
+        int indexarray = 7;
         int i=0;
         byte[] tmp = new byte[b.length];
 
         while ( i < b.length){
-            if (i<13) {
+            if (i<7) {
                 tmp[i] = b[i];
                 i++;
             }
