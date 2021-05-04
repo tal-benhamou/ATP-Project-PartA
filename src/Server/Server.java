@@ -46,15 +46,20 @@ public class Server {
         }
     }
 
-    private void handleClient(Socket clientSocket){
+    private void handleClient(Socket clientSocket) {
         System.out.println("Client accepted : " + clientSocket.toString());
 
         try {
             strategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
-            Thread.sleep(10000);
+            //Thread.sleep(10000);
             clientSocket.close();
-        }catch (IOException | InterruptedException e){
+        }catch (IOException e){
             System.out.println("IOException");
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         System.out.println("Done With Socket : " + clientSocket.toString());
     }

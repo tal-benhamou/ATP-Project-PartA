@@ -52,7 +52,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                         mazeInFile = ((byte[]) ((Object[]) inFromFile.readObject())[0]);
                         solutionInFile = ((Solution) ((Object[]) inFromFile.readObject())[1]);
                         algNameinFile = ((String) ((Object[]) inFromFile.readObject())[2]);
-                        if (Arrays.equals(maze.toByteArray(), mazeInFile) && algNameinFile.equals(conf.getProperty("mazeSearchingAlgorithm"))) {
+                        if (mazeInFile.length == maze.toByteArray().length && algNameinFile.equals(conf.getProperty("mazeSearchingAlgorithm")) && Arrays.equals(maze.toByteArray(), mazeInFile)) {
                             toClient.writeObject(solutionInFile);
                             toClient.flush();
                             inFromFile.close();
@@ -71,8 +71,10 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             if (!found){
                 SearchableMaze problem = new SearchableMaze(maze);
                 Solution solution = alg.solve(problem);
+                toClient.writeObject(solution);
+                toClient.flush();
                 Object[] obj = new Object[3];
-                obj[0] = maze;
+                obj[0] = maze.toByteArray();
                 obj[1] = solution;
                 obj[2] = conf.getProperty("mazeSearchingAlgorithm");
 //                    fileOutputStream = new FileOutputStream(dir);
