@@ -2,9 +2,10 @@ package algorithms.mazeGenerators;
 
 import algorithms.search.ISearchable;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public class Maze {
+public class Maze implements Serializable {
 
     private int[][] map;
     private Position start;

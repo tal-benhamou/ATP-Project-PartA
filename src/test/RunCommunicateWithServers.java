@@ -16,20 +16,20 @@ import Client.*;
 public class RunCommunicateWithServers {
     public static void main(String[] args) {
 //Initializing servers
-        Server mazeGeneratingServer = new Server(5400, 10000, new ServerStrategyGenerateMaze());
-        //Server solveSearchProblemServer = new Server(5401, 10000, new ServerStrategySolveSearchProblem());
+        //Server mazeGeneratingServer = new Server(5400, 10000, new ServerStrategyGenerateMaze());
+        Server solveSearchProblemServer = new Server(5401, 10000, new ServerStrategySolveSearchProblem());
 //Server stringReverserServer = new Server(5402, 1000, new ServerStrategyStringReverser());
 //Starting servers
-        //solveSearchProblemServer.start();
-        mazeGeneratingServer.start();
+        solveSearchProblemServer.start();
+        //mazeGeneratingServer.start();
 //stringReverserServer.start();
 //Communicating with servers
-        CommunicateWithServer_MazeGenerating();
-      //  CommunicateWithServer_SolveSearchProblem();
+        //CommunicateWithServer_MazeGenerating();
+        CommunicateWithServer_SolveSearchProblem();
 //CommunicateWithServer_StringReverser();
 //Stopping all servers
-        mazeGeneratingServer.stop();
-        //solveSearchProblemServer.stop();
+        //mazeGeneratingServer.stop();
+        solveSearchProblemServer.stop();
 //stringReverserServer.stop();
     }
     private static void CommunicateWithServer_MazeGenerating() {
@@ -41,15 +41,12 @@ public class RunCommunicateWithServers {
                                 ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                                 ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                                 toServer.flush();
-                                int[] mazeDimensions = new int[]{50, 50};
+                                int[] mazeDimensions = new int[]{100, 100};
                                 toServer.writeObject(mazeDimensions); //send maze dimensions to server
                                 toServer.flush();
-                                Thread.sleep(2000);
                                 byte[] compressedMaze = (byte[]) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
-                                //byte[] compressedMaze = new byte[2507];
-                                //fromServer.read(compressedMaze);
                                 InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                                byte[] decompressedMaze = new byte[2507 /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/];
+                                byte[] decompressedMaze = new byte[100*100+7 /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/];
                                 //allocating byte[] for the decompressed maze -
                                 is.read(decompressedMaze); //Fill decompressedMaze
                                 Maze maze = new Maze(decompressedMaze);
@@ -74,10 +71,11 @@ public class RunCommunicateWithServers {
                                 ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                                 toServer.flush();
                                 MyMazeGenerator mg = new MyMazeGenerator();
-                                Maze maze = mg.generate(50, 50);
+                                Maze maze = mg.generate(10, 10);
                                 maze.print();
                                 toServer.writeObject(maze); //send maze to server
                                 toServer.flush();
+                                Thread.sleep(10000);
                                 Solution mazeSolution = (Solution) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
 
 //Print Maze Solution retrieved from the server

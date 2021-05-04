@@ -1,8 +1,10 @@
 package IO;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.lang.Class;
 
 public class MyCompressorOutputStream extends OutputStream {
 
@@ -20,7 +22,7 @@ public class MyCompressorOutputStream extends OutputStream {
     @Override
     public void write(byte[] b) throws IOException {
         byte[] result = Compress(b);
-        out.write(result);
+        ((ObjectOutputStream) out).writeObject(result);
         out.flush();
        // out.close();
     }
