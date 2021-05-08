@@ -71,11 +71,10 @@ public class RunCommunicateWithServers {
                                 ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                                 toServer.flush();
                                 MyMazeGenerator mg = new MyMazeGenerator();
-                                Maze maze = mg.generate(10, 10);
+                                Maze maze = mg.generate(20, 20);
                                 maze.print();
                                 toServer.writeObject(maze); //send maze to server
                                 toServer.flush();
-                                Thread.sleep(10000);
                                 Solution mazeSolution = (Solution) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
 
 //Print Maze Solution retrieved from the server
