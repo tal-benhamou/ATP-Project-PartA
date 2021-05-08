@@ -2,6 +2,7 @@ package Server;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
+import com.sun.corba.se.impl.orbutil.ObjectWriter;
 
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -11,7 +12,7 @@ import java.util.Objects;
 
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
     @Override
-    public void applyStrategy(InputStream inFromClient, OutputStream outToClient) {
+    public void ServerStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
@@ -20,39 +21,51 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             boolean found = false;
 
             /*checking which searching algorithm*/
-            if (conf.getProperty("mazeSearchingAlgorithm") == "BFS")
-                alg = new BreadthFirstSearch();
-            else if (conf.getProperty("mazeSearchingAlgorithm") == "DFS")
-                alg = new DepthFirstSearch();
-            else if (conf.getProperty("mazeSearchingAlgorithm") == "BEST")
-                alg = new BestFirstSearch();
-            else
-                alg = null;
+            switch (conf.getProperty("mazeSearchingAlgorithm")) {
+                case "BFS":
+                    alg = new BreadthFirstSearch();
+                    break;
+                case "DFS":
+                    alg = new DepthFirstSearch();
+                    break;
+                case "BEST":
+                    alg = new BestFirstSearch();
+                    break;
+                default:
+                    alg = null;
+                    break;
+            }
             assert alg != null;
-
+            int index = 0;
             Maze maze = (Maze) fromClient.readObject();
             byte[] mazeInFile;
             Solution solutionInFile;
-            String algNameinFile;
-           // Object[] obj;
+            int hashMaze = maze.hashCode();
             String tempDirectoryPath = System.getProperty("java.io.tmpdir");
-            ObjectInputStream inFromFile;
-            ObjectOutputStream outToFile;
-            File dir = new File(tempDirectoryPath);
 
             FileInputStream fileinstream;
-            FileOutputStream fileOutputStream;
+            ObjectInputStream inFromFile;
 
-//obj[0] = maze (byte[]), obj[1] = solution, obj[2] = algorithm search
-            if (dir.listFiles() != null) {
-                for (File file : Objects.requireNonNull(dir.listFiles())) {
+            File tempDirectory = new File(tempDirectoryPath);
+
+            FileOutputStream fileOutputStream;
+            ObjectOutputStream outToFile;
+
+
+//obj[0] = maze (byte[]), obj[1] = solution
+            if (tempDirectory.listFiles() != null) {
+                for (File file : Objects.requireNonNull(tempDirectory.listFiles())) {
                     if (file.isFile()) {
-                        fileinstream = new FileInputStream(file);
-                        inFromFile = new ObjectInputStream(fileinstream);
-                        mazeInFile = ((byte[]) ((Object[]) inFromFile.readObject())[0]);
-                        solutionInFile = ((Solution) ((Object[]) inFromFile.readObject())[1]);
-                        algNameinFile = ((String) ((Object[]) inFromFile.readObject())[2]);
-                        if (mazeInFile.length == maze.toByteArray().length && algNameinFile.equals(conf.getProperty("mazeSearchingAlgorithm")) && Arrays.equals(maze.toByteArray(), mazeInFile)) {
+                        try {
+                            fileinstream = new FileInputStream(file);
+                            inFromFile = new ObjectInputStream(fileinstream);
+                            Object[] obj = (Object[]) inFromFile.readObject();
+                            mazeInFile = (byte[]) obj[0];
+                            solutionInFile = ((Solution) obj[1]);
+                        } catch (Exception e) {
+                            continue;
+                        }
+                        if (mazeInFile.length == maze.toByteArray().length && Arrays.equals(maze.toByteArray(), mazeInFile)) {
                             toClient.writeObject(solutionInFile);
                             toClient.flush();
                             inFromFile.close();
@@ -66,6 +79,8 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                             fileinstream.close();
                         }
                     }
+                    if (file.getName().contains(Integer.toString(hashMaze)))
+                        index++;
                 }
             }
             if (!found){
@@ -73,18 +88,14 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 Solution solution = alg.solve(problem);
                 toClient.writeObject(solution);
                 toClient.flush();
-                Object[] obj = new Object[3];
+                Object[] obj = new Object[2];
                 obj[0] = maze.toByteArray();
                 obj[1] = solution;
-                obj[2] = conf.getProperty("mazeSearchingAlgorithm");
-//                    fileOutputStream = new FileOutputStream(dir);
-//                    Writer writeFile = new BufferedWriter(new FileWriter(dir));
-//                    outToFile = new ObjectOutputStream(fileOutputStream);
-//                    writeFile.writeObject(obj);
+                File newfile = new File(tempDirectory.getAbsolutePath() + "/"+ hashMaze +"_"+index);
+                fileOutputStream = new FileOutputStream(newfile);
 
-                File file = new File(dir, "new");
-                fileOutputStream = new FileOutputStream(file);
                 outToFile = new ObjectOutputStream(fileOutputStream);
+
                 outToFile.writeObject(obj);
                 outToFile.flush();
                 outToFile.close();
