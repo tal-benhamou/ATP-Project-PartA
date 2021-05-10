@@ -13,9 +13,7 @@ public class Configurations {
     private Configurations() throws IOException {
         prop = new Properties();
         in = getClass().getClassLoader().getResourceAsStream("config.properties");
-        out = new FileOutputStream("C:\\Users\\talbe\\IdeaProjects\\ATP-Project-PartB\\resources\\config.properties");
         prop.load(in);
-
     }
 
     public static Configurations Instance() {
@@ -23,14 +21,20 @@ public class Configurations {
             if (m_file == null)
                 m_file = new Configurations();
         } catch (IOException e) {
-            System.out.println("File Configuration Not Found");
+            e.printStackTrace();
         }
         return m_file;
     }
 
-    public String getProperty(String property){
+    public synchronized String getProperty(String property){
         if (m_file == null)
             return null;
         return prop.getProperty(property);
+    }
+    public void create()throws IOException{
+        prop = new Properties();
+        in = getClass().getClassLoader().getResourceAsStream("config.properties");
+        prop.load(in);
+        out = new FileOutputStream("resources\\config.properties");
     }
 }

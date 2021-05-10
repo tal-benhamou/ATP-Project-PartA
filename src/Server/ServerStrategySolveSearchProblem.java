@@ -55,7 +55,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 //obj[0] = maze (byte[]), obj[1] = solution
             if (tempDirectory.listFiles() != null) {
                 for (File file : Objects.requireNonNull(tempDirectory.listFiles())) {
-                    if (file.isFile()) {
+                    if (file.getName().contains("maze") && file.isFile()) {
                         try {
                             fileinstream = new FileInputStream(file);
                             inFromFile = new ObjectInputStream(fileinstream);
@@ -65,7 +65,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                         } catch (Exception e) {
                             continue;
                         }
-                        if (mazeInFile.length == maze.toByteArray().length && Arrays.equals(maze.toByteArray(), mazeInFile)) {
+                        if (hashMaze == mazeInFile.hashCode() && mazeInFile.length == maze.toByteArray().length && Arrays.equals(maze.toByteArray(), mazeInFile)) {
                             toClient.writeObject(solutionInFile);
                             toClient.flush();
                             inFromFile.close();
@@ -91,7 +91,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 Object[] obj = new Object[2];
                 obj[0] = maze.toByteArray();
                 obj[1] = solution;
-                File newfile = new File(tempDirectory.getAbsolutePath() + "/"+ hashMaze +"_"+index);
+                File newfile = new File(tempDirectory.getAbsolutePath() + "/"+"maze_"+ hashMaze +"_"+index);
                 fileOutputStream = new FileOutputStream(newfile);
 
                 outToFile = new ObjectOutputStream(fileOutputStream);

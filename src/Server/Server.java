@@ -35,7 +35,6 @@ public class Server {
                     Socket client = serverSocket.accept();
                     threadPool.execute(() -> handleClient(client));
                 } catch (SocketTimeoutException ex) {
-                    System.out.println("Socket TimeOut");
                 }
             }
             serverSocket.close();
@@ -47,20 +46,15 @@ public class Server {
     }
 
     private void handleClient(Socket clientSocket) {
-        System.out.println("Client accepted : " + clientSocket.toString());
-
         try {
             strategy.ServerStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
             clientSocket.close();
         }catch (IOException e){
-            System.out.println("IOException");
+            e.printStackTrace();
         }
-
-        System.out.println("Done With Socket : " + clientSocket.toString());
     }
 
     public void stop(){
-        System.out.println("Stopping the Server...");
         stop = true;
     }
 }

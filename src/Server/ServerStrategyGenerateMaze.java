@@ -26,14 +26,10 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
             assert generator != null;
 
             int[] arr = (int[]) fromClient.readObject();
-            System.out.println(arr[0]);
-            System.out.println(arr[1]);
             Maze maze = generator.generate(arr[0], arr[1]);
             MyCompressorOutputStream compress = new MyCompressorOutputStream(toClient);
-            //toClient.writeObject(compress.Compress(maze.toByteArray()));
             compress.write(maze.toByteArray());
             compress.flush();
-            System.out.println("The Maze WRITED to the client");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
